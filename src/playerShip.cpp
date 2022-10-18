@@ -29,18 +29,18 @@ void updateShip() {
     shipPos = {winWidth / 2.0f - (shipSprite.width / 10), winHeight - (winHeight / 4)};
     shipVel = {0.0f,0.0f};
 
-    //// Checks whether to alternate flame sprite and then resets counter
-    //flameSpeedCounter++;
-    //if (flameSpeedCounter == 5)
-    //    {
-    //        if (shipFlameFrame == 0)
-    //        {
-    //            shipFlameFrame = shipFrameHeight;
-    //        } else {
-    //            shipFlameFrame = 0;
-    //        }
-    //        flameSpeedCounter = 0;
-    //    }
+    // Checks whether to alternate flame sprite and then resets counter
+    flameSpeedCounter++;
+    if (flameSpeedCounter == 5)
+        {
+            if (shipFlameFrame == 0)
+            {
+                shipFlameFrame = shipFrameHeight;
+            } else {
+                shipFlameFrame = 0;
+            }
+            flameSpeedCounter = 0;
+        }
 }
 
 void drawShip() {
