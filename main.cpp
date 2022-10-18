@@ -29,29 +29,11 @@ int main()
     float midScroll = 0;
     float foreScroll = -foreLayer.height;
 
-    ////////////////////////////
-    // SHIP
-    ////////////////////////////
+    initShip(); // Initiatilize the ship
 
-    //Load the ship texture
-    Texture2D shipSprite = LoadTexture("assets/sprites/ship.png");
-
-    // Variables for sprite sheet selection
-    float shipFrameWidth = shipSprite.width / 5.0f;     //Get the width of a single frame
-    float shipFrameHeight = shipSprite.height / 2.0f;    //Get the height of a single frame
-    float currentShipFrame = shipFrameWidth * 2.0f;     //Set the current frame
-    float shipFlameFrame = 0;                           //Used to switch vertically to flicker the flame
-    int flameSpeedCounter = 0;                          //Used to calculate the speed of the flame flicker
-
-
-    ////////////////////////////
-    // Gameloop
-    ////////////////////////////
+    //Gameloop
     while (!WindowShouldClose())
     {
-        ////////////////////////////
-        // BACKGROUND UPDATES
-        ////////////////////////////
         
         //Update background positions
         bgScroll += 5.0f * gameSpeed;
@@ -62,19 +44,8 @@ int main()
         if (bgScroll >= background.height*2) bgScroll = 0;
         if (midScroll >= midLayer.height*2) midScroll = -midLayer.height*2;
         if (foreScroll >= foreLayer.height*2) foreScroll = -foreLayer.height*2;
-
-        ////////////////////////////
-        // PLAYER SHIP
-        ////////////////////////////     
-        
-        flameSpeedCounter++; //increment counter
-
-        // Flicker the engine fire by switching the sprite sheet vertically
-        flameFlicker(&flameSpeedCounter, &shipFlameFrame, shipFrameHeight);
-        
-        Rectangle spriteRec = { currentShipFrame, shipFlameFrame, (float)shipFrameWidth, (float)shipFrameHeight };
-        Vector2 shipPos = {winWidth / 2.0f - (shipSprite.width / 10), winHeight - (winHeight / 4)};
-        Vector2 shipVel = {0.0f,0.0f};
+    
+        updateShip(); //Update ship variables
         
 
         ////////////////////////////
@@ -91,8 +62,7 @@ int main()
             DrawTextureEx(foreLayer, (Vector2){ 0, foreScroll }, 0.0f, 2.0f, WHITE);
             DrawTextureEx(foreLayer, (Vector2){ 0, -foreLayer.height + foreScroll }, 0.0f, 2.0f, WHITE);
 
-            DrawTextureRec(shipSprite, spriteRec, shipPos, WHITE);
-
+            drawShip(); // Draw the ship
             
             DrawFPS(10,10);
         EndDrawing();
@@ -105,5 +75,6 @@ int main()
     UnloadTexture(background);
     UnloadTexture(midLayer);
     UnloadTexture(foreLayer);
+    UnloadShip();
     return 0;
 }
