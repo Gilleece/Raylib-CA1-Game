@@ -1,53 +1,34 @@
+#include <string>
+#include <iostream>
 #include "raylib.h"
+
+#include "src/game_variables.cpp"
+#include "src/level_1.cpp"
+
 
 int main()
 {
-    int winHeight = 1024;
-    int winWidth = 600;
+
     // Create game window
     InitWindow(winWidth, winHeight, "Space Ex");
     // Lock framerate to monitor rate
     SetWindowState(FLAG_VSYNC_HINT);
 
-    //Load textures for background layers
-    Texture2D background = LoadTexture("assets/backgrounds/bg1.png");
-    Texture2D starLayer = LoadTexture("assets/backgrounds/ol4.png");
+    //Variable that sets the game speed
+    float gameSpeed = 1.0f;
 
-    float bgScroll = 0;
-    float midScroll = -starLayer.height*2;
-    float hozScroll = 0;
+    Texture2D background;
+    Texture2D midLayer;
+    Texture2D foreLayer;
 
-    //Game loop
-    while (!WindowShouldClose())
-    {
-        //Update background positions
-        bgScroll += 5.0f;
-        midScroll += 20.0f;
+    level_1(gameSpeed, background, midLayer, foreLayer);
 
-
-        //Reset background position to loop
-        if (bgScroll >= background.height*2) bgScroll = 0;
-        if (midScroll >= starLayer.height*2) midScroll = -starLayer.height*2;
-
-        BeginDrawing();
-            ClearBackground(BLACK);
-
-            //Draw backgrounds based on positions being updated
-            DrawTextureEx(background, (Vector2){ 0, bgScroll}, 0.0f, 2.0f, WHITE);
-            DrawTextureEx(background, (Vector2){ 0, -background.height*2 + bgScroll }, 0.0f, 2.0f, WHITE);
-            DrawTextureEx(starLayer, (Vector2){ 0, midScroll }, 0.0f, 2.0f, WHITE);
-            DrawTextureEx(starLayer, (Vector2){ 0, -starLayer.height + midScroll }, 0.0f, 2.0f, WHITE);
-
-            
-            DrawFPS(10,10);
-        EndDrawing();
-    }
-    // Free memory
-    UnloadTexture(background);
-    UnloadTexture(starLayer);
-
-    // Bit self explanatory
+    // Close the window
     CloseWindow();
 
+    // Free memory
+    UnloadTexture(background);
+    UnloadTexture(midLayer);
+    UnloadTexture(foreLayer);
     return 0;
 }
