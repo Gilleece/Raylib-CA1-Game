@@ -45,7 +45,6 @@ void updateShip() {
 
 void drawShip() {
     DrawTextureRec(shipSprite, spriteRec, shipPos, WHITE);
-    std::cout << currentShipFrame << std::endl;
 }
 
 void UnloadShip() {
