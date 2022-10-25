@@ -6,6 +6,7 @@
 #include "src/game_variables.cpp"
 #include "src/background.cpp"
 #include "src/playerShip.cpp"
+#include "src/playerBullet.cpp"
 
 
 int main()
@@ -17,6 +18,7 @@ int main()
     SetWindowState(FLAG_VSYNC_HINT);                // Lock framerate to monitor refresh rate
     initBackground();                               // Initialize the background textures
     initShip();                                     // Initiatilize the ship
+    initBullet();
 
     ////////////////////////////
     // Gameloop
@@ -26,6 +28,7 @@ int main()
         // Update variables
         updateBackground();                         // Update background variables
         updateShip();                               // Update ship variables
+        updateBullet();
         
         // DRAW FRAMES
         BeginDrawing();
@@ -33,6 +36,7 @@ int main()
 
             drawBackground();                       // Draw the background
             drawShip();                             // Draw the ship
+            drawBullet();
             
             DrawFPS(10,10);                         // Show an FPS counter for debugging purposes
         EndDrawing();

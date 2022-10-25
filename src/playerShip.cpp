@@ -19,18 +19,18 @@ struct {
 } ship;
 
 
-//initialize the variables
+//initialize the ship
 void initShip() {
     ship.shipSprite = LoadTexture("assets/sprites/ship.png");
-    ship.shipFrameWidth = ship.shipSprite.width / 5.0f;           //Get the width of a single frame
-    ship.shipFrameHeight = ship.shipSprite.height / 2.0f;         //Get the height of a single frame
-    ship.shipFrameMod = 2.0f;                                //Set the frame selected;
-    ship.currentShipFrame = ship.shipFrameWidth * ship.shipFrameMod;   //Set the current frame
-    ship.shipFlameFrame = 0;                                 //Used to switch vertically to flicker the flame
-    ship.flameSpeedCounter = 0;                              //Used to calculate the speed of the flame flicker    
+    ship.shipFrameWidth = ship.shipSprite.width / 5.0f;                 //Get the width of a single frame
+    ship.shipFrameHeight = ship.shipSprite.height / 2.0f;               //Get the height of a single frame
+    ship.shipFrameMod = 2.0f;                                           //Set the frame selected;
+    ship.currentShipFrame = ship.shipFrameWidth * ship.shipFrameMod;    //Set the current frame
+    ship.shipFlameFrame = 0;                                            //Used to switch vertically to flicker the flame
+    ship.flameSpeedCounter = 0;                                         //Used to calculate the speed of the flame flicker    
     ship.shipPos = {winWidth / 2.0f - (ship.shipSprite.width / 10), winHeight - (winHeight / 4)}; // Init to mid lower
-    ship.shipVel = {0.0f,0.0f};                              //Init to 0,0
-    ship.shipSpeed = 2.0f;                                   //Init to 1
+    ship.shipVel = {0.0f,0.0f};                                         //Init to 0,0
+    ship.shipSpeed = 2.0f;                                              //Init to 1
 }
 
 void updateShip() {
@@ -43,6 +43,7 @@ void updateShip() {
             ship.shipFlameFrame == 0 ? ship.shipFlameFrame = ship.shipFrameHeight : ship.shipFlameFrame = 0; // Flip the frame vertically
             ship.flameSpeedCounter = 0;
         }
+    
     
     ////////////////////////////
     // Movement 
@@ -102,6 +103,10 @@ void updateShip() {
     //Update Position
     ship.shipPos.x += ship.shipVel.x;
     ship.shipPos.y += ship.shipVel.y;
+
+    ////////////////////////////
+    // Weapons 
+    ////////////////////////////
 
 }
 

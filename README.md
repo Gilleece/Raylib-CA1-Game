@@ -1,2 +1,31 @@
 # Space Fighter
 An incredibly originally titled Shoot 'em Up built with C++ using Raylib.
+
+To do:
+
+
+Required:
+- Ship bullets
+- Small enemy
+- Ship/enemy collision
+- Ship health
+- Bullet/enemy collision
+- UI
+- Music
+- Start screen
+- Medium enemy
+- Large enemy
+
+Nice to have:
+
+- Enemy patterns and switches
+- Pick ups
+- Bomb
+
+Stretch:
+
+- Level 2
+- Level 3
+
+
+Note: Variables etc are verbosely named within this project due to its academic nature.
