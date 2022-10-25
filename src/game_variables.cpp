@@ -7,7 +7,3 @@ const int winWidth = 800;
 
 //game speed
 float gameSpeed = 1.0f;
-
-
-//ship speed
-int shipSpeed = 5;
