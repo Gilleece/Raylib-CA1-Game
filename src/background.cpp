@@ -12,10 +12,10 @@ struct Background {
     float midScroll;        // Scroll speed for middle layer
     float foreScroll;       // Scroll speed for foreground layer
 
-    Background() {
-        background = LoadTexture("assets/backgrounds/bg1.png");
-        midLayer = LoadTexture("assets/backgrounds/ol1.png");
-        foreLayer = LoadTexture("assets/backgrounds/ol4.png");
+    Background(Texture2D backgroundTexture, Texture2D midLayerTexture, Texture2D foreLayerTexture) {
+        background = backgroundTexture;
+        midLayer = midLayerTexture;
+        foreLayer = foreLayerTexture;
         bgScroll = 0;
         midScroll = 0;
         foreScroll = 0;
@@ -34,6 +34,7 @@ struct Background {
     }
 
     void drawBackground() {
+        updateBackground(); // Call from here to reduce calls within main.cpp
         //Draw backgrounds based on positions being updated
         DrawTextureEx(background, (Vector2){ 0, bgScroll}, 0.0f, 2.0f, WHITE);
         DrawTextureEx(background, (Vector2){ 0, -background.height*2 + bgScroll }, 0.0f, 2.0f, WHITE);

@@ -3,6 +3,9 @@
 #include "raylib.h"
 #include "raymath.h"
 
+//Variables
+int maxBullets = 50;
+
 //Declaring ship struct
 struct PlayerShip {
     Texture2D shipSprite = LoadTexture("assets/sprites/ship.png");   //ship sprite sheet
@@ -95,7 +98,12 @@ struct PlayerShip {
     }
 
     void drawShip() {
+        updateShip();// Call from here to reduce calls within main.cpp
         DrawTextureRec(shipSprite, spriteRec, shipPos, WHITE);
+    }
+
+    Vector2 getShipPos() {
+        return shipPos;
     }
 
     void UnloadShip() {

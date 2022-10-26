@@ -4,6 +4,5 @@
 const int winHeight = 900;
 const int winWidth = 700;
 
-
 //game speed
 float gameSpeed = 1.0f;
