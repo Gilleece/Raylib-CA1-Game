@@ -18,9 +18,9 @@ int main()
     SetWindowState(FLAG_VSYNC_HINT);                // Enable Vsync
     SetWindowState(FLAG_MSAA_4X_HINT);              // Turn on MSAA
     SetTargetFPS(60);                               // Lock FPS to 60
-    initBackground();                               // Initialize the background textures
-    initShip();                                     // Initiatilize the ship
-    initBullet();
+    Background background;                          // Create the background object
+    PlayerShip playerShip;                          // Create the player ship object
+    Bullet bullet;
 
     ////////////////////////////
     // Gameloop
@@ -28,17 +28,17 @@ int main()
     while (!WindowShouldClose())
     {
         // Update variables
-        updateBackground();                         // Update background variables
-        updateShip();                               // Update ship variables
-        updateBullet();
+        background.updateBackground();                         // Update background variables
+        playerShip.updateShip();                               // Update ship variables
+        bullet.updateBullet();
         
         // DRAW FRAMES
         BeginDrawing();
             ClearBackground(BLACK);                 // Clear the background and paint it black
 
-            drawBackground();                       // Draw the background
-            drawShip();                             // Draw the ship
-            drawBullet();
+            background.drawBackground();                       // Draw the background
+            playerShip.drawShip();                             // Draw the ship
+            bullet.drawBullet();
             
             DrawFPS(10,10);                         // Show an FPS counter for debugging purposes
         EndDrawing();
@@ -48,8 +48,8 @@ int main()
     // Tidying up
     ////////////////////////////
     CloseWindow();                                  // Close the window
-    unloadBackground();                             // Free memory
-    UnloadShip();                                   // Free memory
+    background.unloadBackground();                             // Free memory
+    playerShip.UnloadShip();                                   // Free memory
     
     return 0;                                       // Successful exit code
 }

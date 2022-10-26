@@ -21,6 +21,7 @@ Nice to have:
 - Enemy patterns and switches
 - Pick ups
 - Bomb
+- Untie game speed/physics from framerate
 
 Stretch:
 
