@@ -15,7 +15,9 @@ int main()
     // Initilization
     ////////////////////////////
     InitWindow(winWidth, winHeight, "Space Fighter (most original title of all time)");    // Create game window
-    SetWindowState(FLAG_VSYNC_HINT);                // Lock framerate to monitor refresh rate
+    SetWindowState(FLAG_VSYNC_HINT);                // Enable Vsync
+    SetWindowState(FLAG_MSAA_4X_HINT);              // Turn on MSAA
+    SetTargetFPS(60);                               // Lock FPS to 60
     initBackground();                               // Initialize the background textures
     initShip();                                     // Initiatilize the ship
     initBullet();
