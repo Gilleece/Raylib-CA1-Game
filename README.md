@@ -5,8 +5,7 @@ To do:
 
 
 Required:
-- Ship bullets
-- Small enemy
+- Asteroid enemy
 - Ship/enemy collision
 - Ship health
 - Bullet/enemy collision

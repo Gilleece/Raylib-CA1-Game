@@ -6,3 +6,6 @@ const int winWidth = 700;
 
 //game speed
 float gameSpeed = 1.0f;
+
+//game progress
+int frameCounter = 0; // For tracking progress of the level, when to spawn enemies etc

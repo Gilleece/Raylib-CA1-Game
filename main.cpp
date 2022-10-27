@@ -7,6 +7,7 @@
 #include "src/background.cpp"
 #include "src/playerShip.cpp"
 #include "src/playerBullet.cpp"
+#include "src/asteroidEnemy.cpp"
 
 
 int main()
@@ -30,19 +31,30 @@ int main()
         );                                          // Create the background object
     PlayerShip playerShip;                          // Create the player ship object
     Bullet bullet[maxBullets];
+    Asteroid asteroid;
 
     ////////////////////////////
     // Gameloop
     ////////////////////////////
     while (!WindowShouldClose())
     {
+        frameCounter++;
         BeginDrawing();
             ClearBackground(BLACK);                 // Clear the background and paint it black, not strictly necessary but handy for debugging
 
             background.drawBackground();            // Background call per frame
-            playerShip.drawShip();                  // Ship call per frame            
+            playerShip.drawShip();                  // Ship call per frame       
 
-            // Bullet mechanic
+            if (frameCounter % 300 == 0)
+            {
+                asteroid.active = true;
+            }
+            
+            asteroid.updateAsteroid();     
+
+            ////////////////////////////
+            // Player bullet loop
+            ////////////////////////////
             fireRateCounter++;       
             if (fireRateCounter > fireRate && IsKeyDown(KEY_SPACE))
             {
@@ -57,22 +69,6 @@ int main()
                     bullet[i].updateBullet(playerShip.getShipPos(), playerShip.shipFrameHeight, playerShip.shipFrameWidth);
                 }
             }
-            
-            
-
-            //for (int i = 0; i < maxBullets; i++)
-            //{
-            //    if (bullet[i].active)
-            //    {
-            //        bullet[i].drawBullet();
-            //    }
-            //    
-            //}
-            
-                      
-
-            // Debugging - Comment out on finish
-            DrawFPS(10,10);                         // Show an FPS counter for debugging purposes
         EndDrawing();
     }
 
@@ -82,6 +78,11 @@ int main()
     CloseWindow();                                  // Close the window
     background.unloadBackground();                  // Free memory
     playerShip.UnloadShip();                        // Free memory
+    for (int i = 0; i < maxBullets; i++)
+    {
+        bullet[i].unloadBullet();
+    }
+    
     
     return 0;                                       // Successful exit code
 }

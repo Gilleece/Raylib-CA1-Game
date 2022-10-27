@@ -5,9 +5,9 @@
 
 // Variables
 const int fireRate = 30;
+const int maxBullets = 50;
 int fireRateCounter = fireRate;
 int currentBullet = 0;
-int maxBullets = 50;
 
 // Declaring bullet struct
 struct Bullet {
@@ -34,7 +34,7 @@ struct Bullet {
         bulletFrame = 0.0f;                                               // Tracks the current animation frame
         bulletAnimationCounter  = 0;                                      // Used to calculate speed of bullet animation
         fireDelayCounter = 5;                                             // Stops bullet spam, allows mechanical tweaking
-        bulletSpeed = 5.0f;                                               // projectile speed
+        bulletSpeed = 8.0f;                                               // projectile speed
         bulletTravel = 0.0f;                                              // Distance travelled of bullet
         fired = false;                                                    // To track bullet state
         active = false;                                                   // Set to false initially
@@ -69,8 +69,8 @@ struct Bullet {
         
         DrawTextureRec(bulletSprite, bulletRec, bulletPos, WHITE);
     }
-
-    void UnloadBullet() {
+    void unloadBullet() {
         UnloadTexture(bulletSprite);
     }
 };
+
