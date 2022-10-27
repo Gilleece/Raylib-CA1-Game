@@ -12,6 +12,7 @@ struct Asteroid {
     float travelDistance;// object distance
     Rectangle rec;       // Rectange to draw bullet onto
     Vector2 pos;         // XY position
+    bool firstTime;      // Check if initial loop
     bool active;         // Bool to show if object still exists
 
     Asteroid() {
@@ -20,11 +21,22 @@ struct Asteroid {
         frameHeight = sprite.height;                                // Height of object   
         travelSpeed = 0.1f;                                         // object speed
         travelDistance = 0.0f;
-        pos = {frameWidth + 10,-frameHeight};                                              // XY position
-        active = false;                                              // Bool to show if object still exists
+        pos = {0.0f,-frameHeight};                                  // XY position
+        firstTime = false;                                          // Set to false
+        active = false;                                             // Bool to show if object still exists
     }
 
-    void updateAsteroid() {
+    void updateAsteroid(int frequency, float startMod, float horizontalMovement) {
+        if (frameCounter % frequency == 0 && !firstTime)
+            {
+                active = true;
+                pos.x = startMod;
+                firstTime = false;
+            } 
+            else if (frameCounter % frequency == 0) 
+            {
+                active = true;
+            }
         if (active)
         {        
             rec = { 0.0f, 0.0f, frameWidth, frameHeight};
@@ -36,7 +48,7 @@ struct Asteroid {
                 active = false;
                 pos.y = -frameHeight;
                 travelDistance = 0.0f;
-                pos.x = (pos.x >= winHeight - frameWidth) ? pos.x = frameWidth + 10 : pos.x += winHeight / 5;
+                pos.x = (pos.x >= winHeight - frameWidth) ? pos.x = startMod : pos.x += horizontalMovement;
             }
             
         DrawTextureRec(sprite, rec, pos, WHITE);

@@ -5,10 +5,9 @@ To do:
 
 
 Required:
-- Asteroid enemy
 - Ship/enemy collision
-- Ship health
 - Bullet/enemy collision
+- Ship health
 - UI
 - Music
 - Start screen

@@ -31,7 +31,9 @@ int main()
         );                                          // Create the background object
     PlayerShip playerShip;                          // Create the player ship object
     Bullet bullet[maxBullets];
-    Asteroid asteroid;
+    Asteroid asteroid1;
+    Asteroid asteroid2;
+    Asteroid asteroid3;
 
     ////////////////////////////
     // Gameloop
@@ -43,14 +45,14 @@ int main()
             ClearBackground(BLACK);                 // Clear the background and paint it black, not strictly necessary but handy for debugging
 
             background.drawBackground();            // Background call per frame
-            playerShip.drawShip();                  // Ship call per frame       
+            playerShip.drawShip();                  // Ship call per frame   
 
-            if (frameCounter % 300 == 0)
-            {
-                asteroid.active = true;
-            }
-            
-            asteroid.updateAsteroid();     
+            ////////////////////////////
+            // Enemies
+            ////////////////////////////                           
+            asteroid1.updateAsteroid(300, 450.0f, 200.0f);     
+            asteroid2.updateAsteroid(500, 120.0f, 120.0f);     
+            asteroid3.updateAsteroid(700, 50.0f, 300.0f);     
 
             ////////////////////////////
             // Player bullet loop
