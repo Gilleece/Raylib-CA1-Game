@@ -3,9 +3,6 @@
 #include "raylib.h"
 #include "raymath.h"
 
-//Variables
-int maxBullets = 50;
-
 //Declaring ship struct
 struct PlayerShip {
     Texture2D shipSprite = LoadTexture("assets/sprites/ship.png");   //ship sprite sheet

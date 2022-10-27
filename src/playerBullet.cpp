@@ -3,6 +3,12 @@
 #include "raylib.h"
 #include "raymath.h"
 
+// Variables
+const int fireRate = 30;
+int fireRateCounter = fireRate;
+int currentBullet = 0;
+int maxBullets = 50;
+
 // Declaring bullet struct
 struct Bullet {
     Texture2D bulletSprite;    // Bullet sprite sheet
@@ -13,10 +19,11 @@ struct Bullet {
     int bulletAnimationCounter;// Used to calculate speed of bullet animation
     int fireDelayCounter;      // Stops bullet spam, allows mechanical tweaking
     float bulletSpeed;         // projectile speed
-    float fireRate;            // Rate of fire
     Rectangle bulletRec;       // Rectange to draw bullet onto
     Vector2 bulletPos;         // XY position
-    Vector2 bulletVel;         // velocity of bullet
+    Vector2 currentPos;        // Updates the position independent of passed through ship position
+    float bulletTravel;        // Distance travelled of bullet
+    bool fired;                // To track bullet state
     bool active;               // Bool to show if bullet still exists
 
     Bullet() {
@@ -27,35 +34,43 @@ struct Bullet {
         bulletFrame = 0.0f;                                               // Tracks the current animation frame
         bulletAnimationCounter  = 0;                                      // Used to calculate speed of bullet animation
         fireDelayCounter = 5;                                             // Stops bullet spam, allows mechanical tweaking
-        bulletSpeed = 1.0f;                                               // projectile speed
-        bulletPos = {20,20};                                              // XY position
-        bulletVel = {0.0f, 0.0f};                                         // velocity of bullet
-        fireRate = 1;                                                     // Rate of fire
+        bulletSpeed = 5.0f;                                               // projectile speed
+        bulletTravel = 0.0f;                                              // Distance travelled of bullet
+        fired = false;                                                    // To track bullet state
         active = false;                                                   // Set to false initially
     }
 
-    void updateBullet() {
-    bulletRec = { bulletFrame, bulletType, (float)bulletFrameWidth, (float)bulletFrameHeight};
-
-    // Checks whether to alternate bullet animation sprite and then resets counter
-    bulletAnimationCounter++;
-    if (bulletAnimationCounter == 5)
+    void updateBullet(Vector2 startPos, float shipHeight, float shipWidth) {
+        if (!fired)
         {
-            bulletFrame == 0.0f ? bulletFrame = bulletFrameWidth - 4.0f : bulletFrame = 0.0f; // Flip the frame horizontally, the -8 is to correct for the sprite sheet not being centered
-            bulletAnimationCounter = 0;
+            currentPos = startPos;
+            fired = true;
         }
-    }
+        
+        bulletRec = { bulletFrame, bulletType, (float)bulletFrameWidth, (float)bulletFrameHeight};
+        // Bullet position
+        bulletPos = {currentPos.x + shipWidth / 5 + 1.0f, currentPos.y - bulletTravel - shipHeight / 5};
+        bulletTravel += bulletSpeed;
 
-    void drawBullet() {
-    DrawTextureRec(bulletSprite, bulletRec, bulletPos, WHITE);
-    }
+        if (bulletPos.y < 0)
+        {
+            active = false;
+            fired = false;
+        }
+        
 
-    void fireBullet() {
-        updateBullet();
-        drawBullet();
+        // Checks whether to alternate bullet animation sprite and then resets counter
+        bulletAnimationCounter++;
+        if (bulletAnimationCounter == 5)
+            {
+                bulletFrame == 0.0f ? bulletFrame = bulletFrameWidth - 4.0f : bulletFrame = 0.0f; // Flip the frame horizontally, the -8 is to correct for the sprite sheet not being centered
+                bulletAnimationCounter = 0;
+            }
+        
+        DrawTextureRec(bulletSprite, bulletRec, bulletPos, WHITE);
     }
 
     void UnloadBullet() {
-    UnloadTexture(bulletSprite);
+        UnloadTexture(bulletSprite);
     }
 };
