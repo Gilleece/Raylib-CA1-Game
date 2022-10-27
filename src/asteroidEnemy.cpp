@@ -11,6 +11,7 @@ struct Asteroid {
     float travelSpeed;   // object speed
     float travelDistance;// object distance
     Rectangle rec;       // Rectange to draw bullet onto
+    Rectangle hitBox;    // Rectange for collision detection
     Vector2 pos;         // XY position
     bool firstTime;      // Check if initial loop
     bool active;         // Bool to show if object still exists
@@ -19,10 +20,10 @@ struct Asteroid {
         sprite = LoadTexture("assets/sprites/AsteroidBrown.png");   // object sprite sheet
         frameWidth = sprite.width;                                  // Width of object
         frameHeight = sprite.height;                                // Height of object   
-        travelSpeed = 0.1f;                                         // object speed
+        travelSpeed = 0.05f;                                         // object speed
         travelDistance = 0.0f;
         pos = {0.0f,-frameHeight};                                  // XY position
-        firstTime = false;                                          // Set to false
+        firstTime = true;                                          // Set to true
         active = false;                                             // Bool to show if object still exists
     }
 
@@ -30,7 +31,7 @@ struct Asteroid {
         if (frameCounter % frequency == 0 && !firstTime)
             {
                 active = true;
-                pos.x = startMod;
+                pos.x += startMod;
                 firstTime = false;
             } 
             else if (frameCounter % frequency == 0) 
@@ -48,9 +49,13 @@ struct Asteroid {
                 active = false;
                 pos.y = -frameHeight;
                 travelDistance = 0.0f;
-                pos.x = (pos.x >= winHeight - frameWidth) ? pos.x = startMod : pos.x += horizontalMovement;
+                if (pos.x >= winHeight - frameWidth) {
+                    pos.x = startMod;
+                } else {
+                    pos.x += horizontalMovement;
+                }
             }
-            
+        hitBox = {pos.x, pos.y, frameWidth, frameHeight};  
         DrawTextureRec(sprite, rec, pos, WHITE);
         }
     }

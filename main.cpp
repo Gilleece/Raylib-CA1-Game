@@ -50,9 +50,9 @@ int main()
             ////////////////////////////
             // Enemies
             ////////////////////////////                           
-            asteroid1.updateAsteroid(300, 450.0f, 200.0f);     
+            asteroid1.updateAsteroid(600, 450.0f, 200.0f);     
             asteroid2.updateAsteroid(500, 120.0f, 120.0f);     
-            asteroid3.updateAsteroid(700, 50.0f, 300.0f);     
+            asteroid3.updateAsteroid(100, 300.0f, 80.0f);     
 
             ////////////////////////////
             // Player bullet loop
@@ -70,6 +70,19 @@ int main()
                 if (bullet[i].active) {
                     bullet[i].updateBullet(playerShip.getShipPos(), playerShip.shipFrameHeight, playerShip.shipFrameWidth);
                 }
+            }
+
+            ////////////////////////////
+            // Collision detection
+            ////////////////////////////
+            
+            //Ship hits
+            if (playerShip.alive)
+            {
+                //Asteroids
+                if (CheckCollisionRecs(playerShip.hitBox, asteroid1.hitBox)) { playerShip.death(); };
+                if (CheckCollisionRecs(playerShip.hitBox, asteroid2.hitBox)) { playerShip.death(); };
+                if (CheckCollisionRecs(playerShip.hitBox, asteroid3.hitBox)) { playerShip.death(); };
             }
         EndDrawing();
     }
