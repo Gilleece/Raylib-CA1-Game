@@ -9,3 +9,6 @@ float gameSpeed = 1.0f;
 
 //game progress
 int frameCounter = 0; // For tracking progress of the level, when to spawn enemies etc
+
+//Tracking variables
+int playerScore = 0;

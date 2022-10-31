@@ -25,6 +25,7 @@ struct Bullet {
     float bulletTravel;        // Distance travelled of bullet
     bool fired;                // To track bullet state
     bool active;               // Bool to show if bullet still exists
+    Rectangle hitBox;
 
     Bullet() {
         bulletSprite = LoadTexture("assets/sprites/laser-bolts.png");     // Bullet sprite sheet
@@ -50,6 +51,7 @@ struct Bullet {
         bulletRec = { bulletFrame, bulletType, (float)bulletFrameWidth, (float)bulletFrameHeight};
         // Bullet position
         bulletPos = {currentPos.x + shipWidth / 5 + 1.0f, currentPos.y - bulletTravel - shipHeight / 5};
+        hitBox = {bulletPos.x, bulletPos.y, bulletFrameWidth, bulletFrameHeight};
         bulletTravel += bulletSpeed;
 
         if (bulletPos.y < 0)

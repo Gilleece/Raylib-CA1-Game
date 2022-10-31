@@ -5,10 +5,10 @@ To do:
 
 
 Required:
+- UI
 - Ship/enemy collision
 - Bullet/enemy collision
 - Ship health
-- UI
 - Music
 - Start screen
 - Medium enemy

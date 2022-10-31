@@ -15,6 +15,8 @@ struct Asteroid {
     Vector2 pos;         // XY position
     bool firstTime;      // Check if initial loop
     bool active;         // Bool to show if object still exists
+    bool destroyed;      // Bool to show if destroyed
+    int opacity;         // counter to handle opacity fade
 
     Asteroid() {
         sprite = LoadTexture("assets/sprites/AsteroidBrown.png");   // object sprite sheet
@@ -25,6 +27,8 @@ struct Asteroid {
         pos = {0.0f,-frameHeight};                                  // XY position
         firstTime = true;                                          // Set to true
         active = false;                                             // Bool to show if object still exists
+        destroyed = false;                                          // If true then player has shot the asteroid
+        opacity = 255;
     }
 
     void updateAsteroid(int frequency, float startMod, float horizontalMovement) {
@@ -38,7 +42,7 @@ struct Asteroid {
             {
                 active = true;
             }
-        if (active)
+        if (active && !destroyed)
         {        
             rec = { 0.0f, 0.0f, frameWidth, frameHeight};
             // Asteroid position
@@ -49,18 +53,45 @@ struct Asteroid {
                 active = false;
                 pos.y = -frameHeight;
                 travelDistance = 0.0f;
-                if (pos.x >= winHeight - frameWidth) {
+                if (pos.x >= winHeight - frameWidth) 
+                {
                     pos.x = startMod;
-                } else {
+                } 
+                else 
+                {
                     pos.x += horizontalMovement;
                 }
             }
         hitBox = {pos.x, pos.y, frameWidth, frameHeight};  
-        DrawTextureRec(sprite, rec, pos, WHITE);
+        DrawTextureRec(sprite, rec, pos, CLITERAL(Color){ 255, 255, 255, opacity});
+        }
+        if (destroyed && opacity > 0) 
+        {
+            hitBox = {0, 0, 0, 0}; // To stop hitbox blocking bullets or movement after asteroid is destroyed
+            opacity -= 15;
+            DrawTextureRec(sprite, rec, pos, CLITERAL(Color){ 255, 255, 255, opacity});
+        } 
+        else if (destroyed && opacity <= 0)
+        {
+            active = false;
+            pos.y = -frameHeight;
+            travelDistance = 0.0f;
+            if (pos.x >= winHeight - frameWidth) 
+            {
+                pos.x = startMod;
+            } 
+            else 
+            {
+                pos.x += horizontalMovement;
+            }
+            destroyed = false;
+            opacity = 255;
         }
     }
     void unload() {
         UnloadTexture(sprite);
     }
+
+
 };
 

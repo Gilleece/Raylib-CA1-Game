@@ -5,9 +5,10 @@
 
 #include "src/game_variables.cpp"
 #include "src/background.cpp"
+#include "src/asteroidEnemy.cpp"
 #include "src/playerShip.cpp"
 #include "src/playerBullet.cpp"
-#include "src/asteroidEnemy.cpp"
+
 
 
 int main()
@@ -77,12 +78,21 @@ int main()
             ////////////////////////////
             
             //Ship hits
-            if (playerShip.alive)
+            if (playerShip.alive && frameCounter > 120) // Added min frame counter to counteract hitboxs spawning on top of eachother before positioned
             {
                 //Asteroids
-                if (CheckCollisionRecs(playerShip.hitBox, asteroid1.hitBox)) { playerShip.alive = false; };
-                if (CheckCollisionRecs(playerShip.hitBox, asteroid2.hitBox)) { playerShip.alive = false; };
-                if (CheckCollisionRecs(playerShip.hitBox, asteroid3.hitBox)) { playerShip.alive = false; };
+                if (CheckCollisionRecs(playerShip.hitBox, asteroid1.hitBox) && asteroid1.destroyed == false) { playerShip.alive = false; };
+                if (CheckCollisionRecs(playerShip.hitBox, asteroid2.hitBox) && asteroid2.destroyed == false) { playerShip.alive = false; };
+                if (CheckCollisionRecs(playerShip.hitBox, asteroid3.hitBox) && asteroid3.destroyed == false) { playerShip.alive = false; };
+            }
+            //Bullet hits
+            for (int i = 0; i < maxBullets; i++)
+            {  
+                if (bullet[i].active) {
+                    if (CheckCollisionRecs(bullet[i].hitBox, asteroid1.hitBox)) { bullet[i].active = false; asteroid1.destroyed = true; };
+                    if (CheckCollisionRecs(bullet[i].hitBox, asteroid2.hitBox)) { bullet[i].active = false; asteroid2.destroyed = true; };
+                    if (CheckCollisionRecs(bullet[i].hitBox, asteroid3.hitBox)) { bullet[i].active = false; asteroid3.destroyed = true; };
+                }
             }
         EndDrawing();
     }

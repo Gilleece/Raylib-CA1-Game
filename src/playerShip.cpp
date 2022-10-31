@@ -154,24 +154,19 @@ struct PlayerShip {
         }
         else if (invincibleFrames == 60)
         {
-            std::cout << "INITIAL" << std::endl;
             shipPos = {winWidth / 2.0f - (shipSprite.width / 10), winHeight - (winHeight / 4)};  
             invincibleFrames--;      
         }
         else if (invincibleFrames > 0 && invincibleFrames != 60)
         {
-            std::cout << "GOING DOWN" << std::endl;
             if (invincibleFrames % 10 == 0 && invincibleFrames > 0)
             {
-                std::cout << "SHOW" << std::endl;
                 shipSprite = LoadTexture("assets/sprites/ship.png");
             }
             else
             {
-                std::cout << "HIDE" << std::endl;
                 shipSprite = LoadTexture("assets/sprites/shipBlank.png");
-            }            
-            std::cout << "DECREMENT" << std::endl;
+            }
             invincibleFrames--;
         }
         else
