@@ -62,8 +62,12 @@ int main()
             if (fireRateCounter > fireRate && IsKeyDown(KEY_SPACE))
             {
                 fireRateCounter = 0;
-                bullet[currentBullet].active = true;
+                if (bullet[currentBullet].active == false) { bullet[currentBullet].active = true; }                
                 currentBullet++;
+                std::cout << currentBullet << std::endl;
+                if (currentBullet >= maxBullets - 1){
+                    currentBullet = 0;
+                }
             }
 
             for (int i = 0; i < maxBullets; i++)

@@ -4,7 +4,7 @@
 #include "raymath.h"
 
 // Variables
-const int fireRate = 30;
+const int fireRate = 20;
 const int maxBullets = 50;
 int fireRateCounter = fireRate;
 int currentBullet = 0;
@@ -44,32 +44,38 @@ struct Bullet {
     void updateBullet(Vector2 startPos, float shipHeight, float shipWidth) {
         if (!fired)
         {
+            std::cout << "GETTING CALLED" << std::endl;
             currentPos = startPos;
             fired = true;
         }
         
-        bulletRec = { bulletFrame, bulletType, (float)bulletFrameWidth, (float)bulletFrameHeight};
-        // Bullet position
-        bulletPos = {currentPos.x + shipWidth / 5 + 1.0f, currentPos.y - bulletTravel - shipHeight / 5};
-        hitBox = {bulletPos.x, bulletPos.y, bulletFrameWidth, bulletFrameHeight};
-        bulletTravel += bulletSpeed;
-
-        if (bulletPos.y < 0)
+        if (fired)
         {
-            active = false;
-            fired = false;
-        }
-        
+            std::cout << "ALSO GETTING CALLED" << std::endl;
+            bulletRec = { bulletFrame, bulletType, (float)bulletFrameWidth, (float)bulletFrameHeight};
+            // Bullet position
+            bulletPos = {currentPos.x + shipWidth / 5 + 1.0f, currentPos.y - bulletTravel - shipHeight / 5};
+            hitBox = {bulletPos.x, bulletPos.y, bulletFrameWidth, bulletFrameHeight};
+            bulletTravel += bulletSpeed;
 
-        // Checks whether to alternate bullet animation sprite and then resets counter
-        bulletAnimationCounter++;
-        if (bulletAnimationCounter == 5)
+            if (bulletPos.y < 0)
             {
-                bulletFrame == 0.0f ? bulletFrame = bulletFrameWidth - 4.0f : bulletFrame = 0.0f; // Flip the frame horizontally, the -8 is to correct for the sprite sheet not being centered
-                bulletAnimationCounter = 0;
+                active = false;
+                fired = false;
+                bulletTravel = 0.0f;
             }
-        
-        DrawTextureRec(bulletSprite, bulletRec, bulletPos, WHITE);
+            
+
+            // Checks whether to alternate bullet animation sprite and then resets counter
+            bulletAnimationCounter++;
+            if (bulletAnimationCounter == 5)
+                {
+                    bulletFrame == 0.0f ? bulletFrame = bulletFrameWidth - 4.0f : bulletFrame = 0.0f; // Flip the frame horizontally, the -8 is to correct for the sprite sheet not being centered
+                    bulletAnimationCounter = 0;
+                }
+            
+            DrawTextureRec(bulletSprite, bulletRec, bulletPos, WHITE);
+        }
     }
     void unloadBullet() {
         UnloadTexture(bulletSprite);

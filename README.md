@@ -16,6 +16,7 @@ Required:
 
 Nice to have:
 
+- Player gun cool down
 - Enemy patterns and switches
 - Pick ups
 - Bomb

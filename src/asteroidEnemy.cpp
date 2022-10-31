@@ -84,6 +84,7 @@ struct Asteroid {
             {
                 pos.x += horizontalMovement;
             }
+            playerScore += 10;
             destroyed = false;
             opacity = 255;
         }
