@@ -80,9 +80,9 @@ int main()
             if (playerShip.alive)
             {
                 //Asteroids
-                if (CheckCollisionRecs(playerShip.hitBox, asteroid1.hitBox)) { playerShip.death(); };
-                if (CheckCollisionRecs(playerShip.hitBox, asteroid2.hitBox)) { playerShip.death(); };
-                if (CheckCollisionRecs(playerShip.hitBox, asteroid3.hitBox)) { playerShip.death(); };
+                if (CheckCollisionRecs(playerShip.hitBox, asteroid1.hitBox)) { playerShip.alive = false; };
+                if (CheckCollisionRecs(playerShip.hitBox, asteroid2.hitBox)) { playerShip.alive = false; };
+                if (CheckCollisionRecs(playerShip.hitBox, asteroid3.hitBox)) { playerShip.alive = false; };
             }
         EndDrawing();
     }

@@ -13,12 +13,13 @@ struct PlayerShip {
     float currentShipFrame = shipFrameWidth * shipFrameMod; //Set the current frame
     Rectangle spriteRec;    //Ractangle for drawing the frame onto
     //Death Sprite
-    Texture2D deathSprite = LoadTexture("assets/sprites/shipExplosion.png");   //ship sprite sheet
+    Texture2D deathSprite = LoadTexture("assets/sprites/shipExplosion.png");   //ship sprite sheet, not actually used to display the sprite sheet, it is just loaded here to calculate size
     float deathFrameWidth = deathSprite.width / 4.0f;   //Get the width of a single frame
     float deathFrameHeight = deathSprite.height / 4.0f;  //Get the height of a single frame
     float deathFrameY = 0.0f;     //Multiplier for cycling through frames, set here to enable switching spritesheet later for more animation frames if desired 
     float currentDeathFrame = deathFrameWidth * deathFrameY; //Set the current frame
     Rectangle deathSpriteRec;    //Ractangle for drawing the frame onto
+    bool deathAnimationComplete = false;
 
     float shipFlameFrame = 0;   //Used to switch vertically to flicker the flame
     int flameSpeedCounter = 0;  //Used to calculate the speed of the flame flicker
@@ -28,9 +29,10 @@ struct PlayerShip {
     Vector2 shipVel = {0.0f,0.0f};        //Ship velocity
     bool alive = true;
     int lives = 3;
+    int invincibleFrames = 60; // Invicibility frames so player can't instantly die again is spawn position is currently in contact with a hostile
 
     void updateShip() {
-    if (alive) 
+    if (alive || invincibleFrames < 60) 
     {
         spriteRec = { currentShipFrame, shipFlameFrame, (float)shipFrameWidth, (float)shipFrameHeight };
 
@@ -102,41 +104,21 @@ struct PlayerShip {
         shipPos.x += shipVel.x;
         shipPos.y += shipVel.y;
         }
-        if (!alive) {
-            lives--;
-            shipSprite = LoadTexture("assets/sprites/shipExplosion.png");      
-            spriteRec = { currentDeathFrame, deathFrameY, (float)deathFrameWidth, (float)deathFrameHeight };
-            if (frameCounter % 5 == 0)
-            {
-                currentDeathFrame += deathFrameWidth;
-                if (currentDeathFrame > deathFrameWidth * 2.5)
-                {
-                    currentDeathFrame = 0;
-                    deathFrameY += deathFrameHeight;
-                }
-                
-            }
-            if (deathFrameY > deathFrameHeight * 2.5 && lives > 0) 
-            {
-                alive = true;
-            }
-            if (lives == 0)
-            {
-                std::cout << "GAME OVER" << std::endl;
-            }
-            
-
-        }
     }
 
     void drawShip() {
         updateShip();// Call from here to reduce calls within main.cpp
         hitBox = {shipPos.x, shipPos.y, shipFrameWidth, shipFrameHeight};
-        if(alive)
+        if(!alive && !deathAnimationComplete)
         {
+            playDeathAnimation();
+        } 
+        else if (!alive && deathAnimationComplete) {
+            death();
             DrawTextureRec(shipSprite, spriteRec, shipPos, WHITE);
-        } else {
-            DrawTextureRec(deathSprite, spriteRec, shipPos, WHITE);
+        }
+        else if (alive) {
+            DrawTextureRec(shipSprite, spriteRec, shipPos, WHITE);
         }
     }
 
@@ -144,8 +126,63 @@ struct PlayerShip {
         return shipPos;
     }
 
-    void death() {        
-        alive = false;
+    void playDeathAnimation() {
+        Vector2 adjustedShipPos = { shipPos.x - 10, shipPos.y };  
+        DrawTextureRec(deathSprite, deathSpriteRec, adjustedShipPos, WHITE); 
+        deathSpriteRec = { currentDeathFrame, deathFrameY, (float)deathFrameWidth, (float)deathFrameHeight };     
+        if (frameCounter % 5 == 0)
+            {
+                currentDeathFrame += deathFrameWidth;
+                if (currentDeathFrame > deathFrameWidth * 2.5 && deathFrameY == 0.0f)
+                {
+                    currentDeathFrame = 0;
+                    deathFrameY += deathFrameHeight;
+                }
+                if (currentDeathFrame > deathFrameWidth * 2.5 && deathFrameY > 0.0f) {
+                    deathAnimationComplete = true;
+                    deathFrameY = 0.0f;
+                    currentDeathFrame = deathFrameWidth * deathFrameY;
+                }
+                
+            }   
+    }
+
+    void death() {     
+        if (lives == 0)
+        {
+            std::cout << "GAME OVER" << std::endl;
+        }
+        else if (invincibleFrames == 60)
+        {
+            std::cout << "INITIAL" << std::endl;
+            shipPos = {winWidth / 2.0f - (shipSprite.width / 10), winHeight - (winHeight / 4)};  
+            invincibleFrames--;      
+        }
+        else if (invincibleFrames > 0 && invincibleFrames != 60)
+        {
+            std::cout << "GOING DOWN" << std::endl;
+            if (invincibleFrames % 10 == 0 && invincibleFrames > 0)
+            {
+                std::cout << "SHOW" << std::endl;
+                shipSprite = LoadTexture("assets/sprites/ship.png");
+            }
+            else
+            {
+                std::cout << "HIDE" << std::endl;
+                shipSprite = LoadTexture("assets/sprites/shipBlank.png");
+            }            
+            std::cout << "DECREMENT" << std::endl;
+            invincibleFrames--;
+        }
+        else
+        {
+            std::cout << "COMPLETE" << std::endl;
+            lives--;
+            alive = true;  
+            deathAnimationComplete = false;
+            invincibleFrames = 60;
+            shipSprite = LoadTexture("assets/sprites/ship.png");
+        }
     }
 
     void UnloadShip() {
