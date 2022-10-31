@@ -93,9 +93,9 @@ int main()
             for (int i = 0; i < maxBullets; i++)
             {  
                 if (bullet[i].active) {
-                    if (CheckCollisionRecs(bullet[i].hitBox, asteroid1.hitBox)) { bullet[i].active = false; asteroid1.destroyed = true; };
-                    if (CheckCollisionRecs(bullet[i].hitBox, asteroid2.hitBox)) { bullet[i].active = false; asteroid2.destroyed = true; };
-                    if (CheckCollisionRecs(bullet[i].hitBox, asteroid3.hitBox)) { bullet[i].active = false; asteroid3.destroyed = true; };
+                    if (CheckCollisionRecs(bullet[i].hitBox, asteroid1.hitBox)) { bullet[i].resetBullet(); asteroid1.destroyed = true; };
+                    if (CheckCollisionRecs(bullet[i].hitBox, asteroid2.hitBox)) { bullet[i].resetBullet(); asteroid2.destroyed = true; };
+                    if (CheckCollisionRecs(bullet[i].hitBox, asteroid3.hitBox)) { bullet[i].resetBullet(); asteroid3.destroyed = true; };
                 }
             }
         EndDrawing();

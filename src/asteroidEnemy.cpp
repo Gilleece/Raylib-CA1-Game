@@ -63,13 +63,14 @@ struct Asteroid {
                 }
             }
         hitBox = {pos.x, pos.y, frameWidth, frameHeight};  
-        DrawTextureRec(sprite, rec, pos, CLITERAL(Color){ 255, 255, 255, opacity});
+        DrawTextureRec(sprite, rec, pos, CLITERAL(Color){ 255, 255, 255, (unsigned char)opacity});
         }
         if (destroyed && opacity > 0) 
         {
             hitBox = {0, 0, 0, 0}; // To stop hitbox blocking bullets or movement after asteroid is destroyed
+            pos.y-= 3;
             opacity -= 15;
-            DrawTextureRec(sprite, rec, pos, CLITERAL(Color){ 255, 255, 255, opacity});
+            DrawTextureRec(sprite, rec, pos, CLITERAL(Color){ 255, 255, 255, (unsigned char)opacity});
         } 
         else if (destroyed && opacity <= 0)
         {
