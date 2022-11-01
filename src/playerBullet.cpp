@@ -32,8 +32,8 @@ struct Bullet {
         bulletFrameHeight = bulletSprite.height / 2.0f;                   // Height of a bullet
         bulletType = 0;                                                   // Switch through the 2 available bullet types
         bulletFrame = 0.0f;                                               // Tracks the current animation frame
-        fireDelayCounter = 5;                                             // Stops bullet spam, allows mechanical tweaking
-        bulletSpeed = 8.0f;                                               // projectile speed
+        fireDelayCounter = 30;                                             // Stops bullet spam, allows mechanical tweaking
+        bulletSpeed = 15.0f;                                               // projectile speed
         bulletTravel = 0.0f;                                              // Distance travelled of bullet
         fired = false;                                                    // To track bullet state
         active = false;                                                   // Set to false initially
@@ -53,7 +53,7 @@ struct Bullet {
             // Bullet position
             bulletPos = {currentPos.x + shipWidth / 5 + 1.0f, currentPos.y - bulletTravel - shipHeight / 5};
             hitBox = {bulletPos.x, bulletPos.y, bulletFrameWidth, bulletFrameHeight};
-            bulletTravel += bulletSpeed;
+            bulletTravel += bulletSpeed - (gameSpeed * 5.0f);
 
             if (bulletPos.y < 0)
             {

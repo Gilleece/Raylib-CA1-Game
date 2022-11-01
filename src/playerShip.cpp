@@ -23,18 +23,22 @@ struct PlayerShip {
 
     float shipFlameFrame = 0;   //Used to switch vertically to flicker the flame
     int flameSpeedCounter = 0;  //Used to calculate the speed of the flame flicker
-    float shipSpeed = 2.0f;        //Used to modify ship speed
+    float shipSpeed;        //Used to modify ship speed
     Rectangle hitBox;       // Hitbox for ship
     Vector2 shipPos = {winWidth / 2.0f - (shipSprite.width / 10), winHeight - (winHeight / 4)};        //Ship position
+    Vector2 startPos = {winWidth / 2.0f - (shipSprite.width / 10), winHeight - (winHeight / 4)}; // For quick reference on replay
     Vector2 shipVel = {0.0f,0.0f};        //Ship velocity
     bool alive = true;
     int lives = 3;
     int invincibleFrames = 60; // Invicibility frames so player can't instantly die again is spawn position is currently in contact with a hostile
+    int opacity = 255;
 
     void updateShip() {
     if (alive || invincibleFrames < 60) 
     {
         spriteRec = { currentShipFrame, shipFlameFrame, (float)shipFrameWidth, (float)shipFrameHeight };
+
+        shipSpeed = 7.0f - (gameSpeed * 5.0f);
 
         // Checks whether to alternate flame sprite and then resets counter
         flameSpeedCounter++;
@@ -115,10 +119,10 @@ struct PlayerShip {
         } 
         else if (!alive && deathAnimationComplete) {
             death();
-            DrawTextureRec(shipSprite, spriteRec, shipPos, WHITE);
+            DrawTextureRec(shipSprite, spriteRec, shipPos, CLITERAL(Color){ 255, 255, 255, (unsigned char)opacity});
         }
         else if (alive) {
-            DrawTextureRec(shipSprite, spriteRec, shipPos, WHITE);
+            DrawTextureRec(shipSprite, spriteRec, shipPos, CLITERAL(Color){ 255, 255, 255, (unsigned char)opacity});
         }
     }
 
@@ -150,33 +154,32 @@ struct PlayerShip {
     void death() {     
         if (lives == 0)
         {
-            std::cout << "GAME OVER" << std::endl;
+            
         }
         else if (invincibleFrames == 60)
         {
-            shipPos = {winWidth / 2.0f - (shipSprite.width / 10), winHeight - (winHeight / 4)};  
+            shipPos = startPos;  
             invincibleFrames--;      
         }
         else if (invincibleFrames > 0 && invincibleFrames != 60)
         {
             if (invincibleFrames % 10 == 0 && invincibleFrames > 0)
             {
-                shipSprite = LoadTexture("assets/sprites/ship.png");
+                opacity = 128;
             }
             else
             {
-                shipSprite = LoadTexture("assets/sprites/shipBlank.png");
+                opacity = 0;
             }
             invincibleFrames--;
         }
         else
         {
-            std::cout << "COMPLETE" << std::endl;
             lives--;
             alive = true;  
             deathAnimationComplete = false;
             invincibleFrames = 60;
-            shipSprite = LoadTexture("assets/sprites/ship.png");
+            opacity = 255;
         }
     }
 

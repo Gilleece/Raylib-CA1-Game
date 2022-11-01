@@ -44,60 +44,63 @@ int main()
         frameCounter++;
         BeginDrawing();
             ClearBackground(BLACK);                 // Clear the background and paint it black, not strictly necessary but handy for debugging
-
-            background.drawBackground();            // Background call per frame
-            playerShip.drawShip();                  // Ship call per frame   
-
-            ////////////////////////////
-            // Enemies
-            ////////////////////////////                           
-            asteroid1.updateAsteroid(600, 450.0f, 200.0f);     
-            asteroid2.updateAsteroid(500, 120.0f, 120.0f);     
-            asteroid3.updateAsteroid(100, 300.0f, 80.0f);     
-
-            ////////////////////////////
-            // Player bullet loop
-            ////////////////////////////
-            fireRateCounter++;       
-            if (fireRateCounter > fireRate && IsKeyDown(KEY_SPACE))
+            if (!gameOver)
             {
-                fireRateCounter = 0;
-                if (bullet[currentBullet].active == false) { bullet[currentBullet].active = true; }                
-                currentBullet++;
-                std::cout << currentBullet << std::endl;
-                if (currentBullet >= maxBullets - 1){
-                    currentBullet = 0;
+                background.drawBackground();            // Background call per frame
+                playerShip.drawShip();                  // Ship call per frame   
+
+                ////////////////////////////
+                // Enemies
+                ////////////////////////////                           
+                asteroid1.updateAsteroid(600, 450.0f, 200.0f);     
+                asteroid2.updateAsteroid(500, 120.0f, 120.0f);     
+                asteroid3.updateAsteroid(100, 300.0f, 80.0f);     
+
+                ////////////////////////////
+                // Player bullet loop
+                ////////////////////////////       
+                if (frameCounter % (int)(bullet[currentBullet].fireDelayCounter * gameSpeed) == 0 && IsKeyDown(KEY_SPACE))
+                {
+                    if (bullet[currentBullet].active == false) { bullet[currentBullet].active = true; }                
+                    currentBullet++;
+                    if (currentBullet >= maxBullets - 1){
+                        currentBullet = 0;
+                    }
+                }
+
+                for (int i = 0; i < maxBullets; i++)
+                {  
+                    if (bullet[i].active) {
+                        bullet[i].updateBullet(playerShip.getShipPos(), playerShip.shipFrameHeight, playerShip.shipFrameWidth);
+                    }
+                }
+
+                ////////////////////////////
+                // Collision detection
+                ////////////////////////////
+                
+                //Ship hits
+                if (playerShip.alive && frameCounter > 120) // Added min frame counter to counteract hitboxs spawning on top of eachother before positioned
+                {
+                    //Asteroids
+                    if (CheckCollisionRecs(playerShip.hitBox, asteroid1.hitBox) && asteroid1.destroyed == false) { playerShip.alive = false; };
+                    if (CheckCollisionRecs(playerShip.hitBox, asteroid2.hitBox) && asteroid2.destroyed == false) { playerShip.alive = false; };
+                    if (CheckCollisionRecs(playerShip.hitBox, asteroid3.hitBox) && asteroid3.destroyed == false) { playerShip.alive = false; };
+                }
+                //Bullet hits
+                for (int i = 0; i < maxBullets; i++)
+                {  
+                    if (bullet[i].active) {
+                        if (CheckCollisionRecs(bullet[i].hitBox, asteroid1.hitBox)) { bullet[i].resetBullet(); asteroid1.destroyed = true; };
+                        if (CheckCollisionRecs(bullet[i].hitBox, asteroid2.hitBox)) { bullet[i].resetBullet(); asteroid2.destroyed = true; };
+                        if (CheckCollisionRecs(bullet[i].hitBox, asteroid3.hitBox)) { bullet[i].resetBullet(); asteroid3.destroyed = true; };
+                    }
                 }
             }
-
-            for (int i = 0; i < maxBullets; i++)
-            {  
-                if (bullet[i].active) {
-                    bullet[i].updateBullet(playerShip.getShipPos(), playerShip.shipFrameHeight, playerShip.shipFrameWidth);
-                }
-            }
-
-            ////////////////////////////
-            // Collision detection
-            ////////////////////////////
             
-            //Ship hits
-            if (playerShip.alive && frameCounter > 120) // Added min frame counter to counteract hitboxs spawning on top of eachother before positioned
-            {
-                //Asteroids
-                if (CheckCollisionRecs(playerShip.hitBox, asteroid1.hitBox) && asteroid1.destroyed == false) { playerShip.alive = false; };
-                if (CheckCollisionRecs(playerShip.hitBox, asteroid2.hitBox) && asteroid2.destroyed == false) { playerShip.alive = false; };
-                if (CheckCollisionRecs(playerShip.hitBox, asteroid3.hitBox) && asteroid3.destroyed == false) { playerShip.alive = false; };
-            }
-            //Bullet hits
-            for (int i = 0; i < maxBullets; i++)
-            {  
-                if (bullet[i].active) {
-                    if (CheckCollisionRecs(bullet[i].hitBox, asteroid1.hitBox)) { bullet[i].resetBullet(); asteroid1.destroyed = true; };
-                    if (CheckCollisionRecs(bullet[i].hitBox, asteroid2.hitBox)) { bullet[i].resetBullet(); asteroid2.destroyed = true; };
-                    if (CheckCollisionRecs(bullet[i].hitBox, asteroid3.hitBox)) { bullet[i].resetBullet(); asteroid3.destroyed = true; };
-                }
-            }
+            checkGameState(&playerShip.lives, &playerShip.shipPos, &playerShip.shipVel, playerShip.startPos);
+            std::cout << playerShip.lives << std::endl;
+            drawUI();
         EndDrawing();
     }
 

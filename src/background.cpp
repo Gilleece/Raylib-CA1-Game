@@ -23,9 +23,9 @@ struct Background {
 
     void updateBackground() {
         //Update background positions
-        bgScroll += 5.0f * gameSpeed;
-        midScroll += 7.5f * gameSpeed;
-        foreScroll += 10.0f * gameSpeed;
+        bgScroll += 10.0f - (gameSpeed * 5.0f);
+        midScroll += 12.5f - (gameSpeed * 5.0f);
+        foreScroll += 15.0f - (gameSpeed * 5.0f);
 
         //Reset background position to loop
         if (bgScroll >= background.height*2) bgScroll = 0;

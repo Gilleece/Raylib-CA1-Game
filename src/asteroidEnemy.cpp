@@ -21,8 +21,7 @@ struct Asteroid {
     Asteroid() {
         sprite = LoadTexture("assets/sprites/AsteroidBrown.png");   // object sprite sheet
         frameWidth = sprite.width;                                  // Width of object
-        frameHeight = sprite.height;                                // Height of object   
-        travelSpeed = 0.05f;                                         // object speed
+        frameHeight = sprite.height;                                // Height of object
         travelDistance = 0.0f;
         pos = {0.0f,-frameHeight};                                  // XY position
         firstTime = true;                                          // Set to true
@@ -32,6 +31,7 @@ struct Asteroid {
     }
 
     void updateAsteroid(int frequency, float startMod, float horizontalMovement) {
+        travelSpeed = 5.05f - (gameSpeed * 5.0f);
         if (frameCounter % frequency == 0 && !firstTime)
             {
                 active = true;
@@ -48,11 +48,13 @@ struct Asteroid {
             // Asteroid position
             pos = {pos.x, pos.y + travelDistance};
             travelDistance += travelSpeed;
+            hitBox = {pos.x, pos.y, frameWidth, frameHeight};
             if (pos.y > winHeight)
             {
                 active = false;
                 pos.y = -frameHeight;
                 travelDistance = 0.0f;
+                hitBox = {-100, -100, 0, 0}; // To stop hitbox blocking bullets or movement after asteroid is destroyed
                 if (pos.x >= winHeight - frameWidth) 
                 {
                     pos.x = startMod;
@@ -62,12 +64,12 @@ struct Asteroid {
                     pos.x += horizontalMovement;
                 }
             }
-        hitBox = {pos.x, pos.y, frameWidth, frameHeight};  
+          
         DrawTextureRec(sprite, rec, pos, CLITERAL(Color){ 255, 255, 255, (unsigned char)opacity});
         }
         if (destroyed && opacity > 0) 
         {
-            hitBox = {0, 0, 0, 0}; // To stop hitbox blocking bullets or movement after asteroid is destroyed
+            hitBox = {-100, -100, 0, 0}; // To stop hitbox blocking bullets or movement after asteroid is destroyed
             pos.y-= 3;
             opacity -= 15;
             DrawTextureRec(sprite, rec, pos, CLITERAL(Color){ 255, 255, 255, (unsigned char)opacity});
