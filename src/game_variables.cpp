@@ -26,13 +26,29 @@ bool gameOver = false;
 const char* gameOverText = nullptr;
 const char* replayText = nullptr;
 const char* scoreText = "SCORE: ";
-int scoreTextWidth;
+
+// Elements
+Texture2D lifeSprite;
+Rectangle lifeRec;
+
+void initUI() {
+    lifeSprite = LoadTexture("assets/sprites/shipLife.png");
+    lifeRec = {0, 0, (float)lifeSprite.width, (float)lifeSprite.height};
+}
 
 
-void drawUI() {
-    DrawText(scoreText, 10, 10, 30, RED);
-    scoreTextWidth = MeasureText(scoreText, 30);
-    DrawText(TextFormat("%05i", playerScore), scoreTextWidth + 5, 10, 30, RED);
+void drawUI(Font mainFont, int lives) {
+    //Draw Score
+    DrawTextEx(mainFont, scoreText, (Vector2) {10.0f, 10.0f }, (float)mainFont.baseSize, 0, RED);
+    DrawTextEx(mainFont, TextFormat("%05i", playerScore), (Vector2) {160.0f, 10.0f }, (float)mainFont.baseSize, 0, RED); // The 05 in %05i is to format the score to 5 zeroes, purely for aesthetic purporses
+
+    //Draw Lives
+    if (lives > 0) { DrawTextureRec(lifeSprite, lifeRec, (Vector2){winWidth - (float)lifeSprite.width - 10, 2}, WHITE);};
+    if (lives > 1) { DrawTextureRec(lifeSprite, lifeRec, (Vector2){winWidth - ((float)lifeSprite.width*2) - 15, 2}, WHITE);};
+    if (lives > 2) { DrawTextureRec(lifeSprite, lifeRec, (Vector2){winWidth - ((float)lifeSprite.width*3) - 20, 2}, WHITE);};
+    
+    
+
 
     if (gameOver) {
         int textWidth = MeasureText(gameOverText, 60);
@@ -49,7 +65,7 @@ void drawUI() {
 
 
 void checkGameState(int *lives, Vector2 *shipPos, Vector2 *shipVel, Vector2 startPos) {
-    if (frameCounter % 600 == 0 && gameSpeed > 0.1f) {gameSpeed -= 0.1f; std::cout << gameSpeed << std::endl;} // Speeds up date every 10 seconds, until max speed
+    if (frameCounter % 600 == 0 && gameSpeed > 0.1f) {gameSpeed -= 0.1f;} // Speeds up date every 10 seconds, until max speed
     if (*lives == 0) {gameOver = true;}                                                                        // Set Game over state to true on 0 lives
     if (gameOver) {                                                                                            // Applies the text to be displayed
         gameOverText = "Game Over!";
@@ -59,6 +75,7 @@ void checkGameState(int *lives, Vector2 *shipPos, Vector2 *shipVel, Vector2 star
     {
         gameOverText = nullptr;
         replayText = nullptr;
+        gameSpeed = 1.0f;
         playerScore = 0;
         frameCounter = 0;
         *lives = 3;

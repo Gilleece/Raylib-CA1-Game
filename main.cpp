@@ -20,6 +20,8 @@ int main()
     SetWindowState(FLAG_VSYNC_HINT);                // Enable Vsync
     SetWindowState(FLAG_MSAA_4X_HINT);              // Turn on MSAA
     SetTargetFPS(60);                               // Lock FPS to 60
+    Font mainFont = LoadFont("assets/fonts/font.TTF");
+    initUI();
 
 
     ////////////////////////////
@@ -35,6 +37,8 @@ int main()
     Asteroid asteroid1;
     Asteroid asteroid2;
     Asteroid asteroid3;
+    Asteroid asteroid4;
+    Asteroid asteroid5;
 
     ////////////////////////////
     // Gameloop
@@ -55,6 +59,8 @@ int main()
                 asteroid1.updateAsteroid(600, 450.0f, 200.0f);     
                 asteroid2.updateAsteroid(500, 120.0f, 120.0f);     
                 asteroid3.updateAsteroid(100, 300.0f, 80.0f);     
+                asteroid4.updateAsteroid(200, 350.0f, 160.0f);     
+                asteroid5.updateAsteroid(400, 200.0f, 250.0f);     
 
                 ////////////////////////////
                 // Player bullet loop
@@ -88,6 +94,8 @@ int main()
                     if (CheckCollisionRecs(playerShip.hitBox, asteroid1.hitBox) && asteroid1.destroyed == false) { playerShip.alive = false; };
                     if (CheckCollisionRecs(playerShip.hitBox, asteroid2.hitBox) && asteroid2.destroyed == false) { playerShip.alive = false; };
                     if (CheckCollisionRecs(playerShip.hitBox, asteroid3.hitBox) && asteroid3.destroyed == false) { playerShip.alive = false; };
+                    if (CheckCollisionRecs(playerShip.hitBox, asteroid4.hitBox) && asteroid4.destroyed == false) { playerShip.alive = false; };
+                    if (CheckCollisionRecs(playerShip.hitBox, asteroid5.hitBox) && asteroid5.destroyed == false) { playerShip.alive = false; };
                 }
                 //Bullet hits
                 for (int i = 0; i < maxBullets; i++)
@@ -96,13 +104,14 @@ int main()
                         if (CheckCollisionRecs(bullet[i].hitBox, asteroid1.hitBox)) { bullet[i].resetBullet(); asteroid1.destroyed = true; };
                         if (CheckCollisionRecs(bullet[i].hitBox, asteroid2.hitBox)) { bullet[i].resetBullet(); asteroid2.destroyed = true; };
                         if (CheckCollisionRecs(bullet[i].hitBox, asteroid3.hitBox)) { bullet[i].resetBullet(); asteroid3.destroyed = true; };
+                        if (CheckCollisionRecs(bullet[i].hitBox, asteroid4.hitBox)) { bullet[i].resetBullet(); asteroid4.destroyed = true; };
+                        if (CheckCollisionRecs(bullet[i].hitBox, asteroid5.hitBox)) { bullet[i].resetBullet(); asteroid5.destroyed = true; };
                     }
                 }
             }
             
             checkGameState(&playerShip.lives, &playerShip.shipPos, &playerShip.shipVel, playerShip.startPos);
-            std::cout << playerShip.lives << std::endl;
-            drawUI();
+            drawUI(mainFont, playerShip.lives);
         EndDrawing();
     }
 
