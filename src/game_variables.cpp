@@ -25,9 +25,11 @@ bool gameOver = false;
 // Text
 const char* gameOverText = nullptr;
 const char* replayText = nullptr;
+//char scoreText = "SCORE: ";
 
 
 drawUI() {
+
     if (gameOver) {
         int textWidth = MeasureText(gameOverText, 60);
         int replayTextWidth = MeasureText(replayText, 30);
@@ -43,13 +45,13 @@ drawUI() {
 
 
 checkGameState(int *lives, Vector2 *shipPos, Vector2 *shipVel, Vector2 startPos) {
-    if (frameCounter % 600 == 0 && gameSpeed > 0.1f) {gameSpeed -= 0.1f; std::cout << gameSpeed << std::endl;}
-    if (*lives == 0) {gameOver = true;}
-    if (gameOver) {
+    if (frameCounter % 600 == 0 && gameSpeed > 0.1f) {gameSpeed -= 0.1f; std::cout << gameSpeed << std::endl;} // Speeds up date every 10 seconds, until max speed
+    if (*lives == 0) {gameOver = true;}                                                                        // Set Game over state to true on 0 lives
+    if (gameOver) {                                                                                            // Applies the text to be displayed
         gameOverText = "Game Over!";
         replayText = "Press Enter to Play Again.";
     }
-    if (replayText && IsKeyPressed(KEY_ENTER))
+    if (replayText && IsKeyPressed(KEY_ENTER))                                                                 // If player presses enter, while replaytext is displayed, then reset game state and restart game
     {
         gameOverText = nullptr;
         replayText = nullptr;

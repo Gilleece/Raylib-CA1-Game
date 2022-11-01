@@ -152,13 +152,11 @@ struct PlayerShip {
     }
 
     void death() {     
-        if (lives == 0)
+        if (invincibleFrames == 60)
         {
-            
-        }
-        else if (invincibleFrames == 60)
-        {
-            shipPos = startPos;  
+            lives--;
+            shipPos = startPos; 
+            opacity = 0; 
             invincibleFrames--;      
         }
         else if (invincibleFrames > 0 && invincibleFrames != 60)
@@ -174,8 +172,7 @@ struct PlayerShip {
             invincibleFrames--;
         }
         else
-        {
-            lives--;
+        {            
             alive = true;  
             deathAnimationComplete = false;
             invincibleFrames = 60;

@@ -6,9 +6,6 @@ To do:
 
 Required:
 - UI
-- Ship/enemy collision
-- Bullet/enemy collision
-- Ship health
 - Music
 - Start screen
 - Medium enemy
@@ -17,15 +14,8 @@ Required:
 Nice to have:
 
 - Player gun cool down
-- Enemy patterns and switches
 - Pick ups
 - Bomb
-- Untie game speed/physics from framerate
-
-Stretch:
-
-- Level 2
-- Level 3
 
 
 Note: Variables etc are verbosely named within this project due to its academic nature.
