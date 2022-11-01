@@ -21,7 +21,8 @@ struct Asteroid {
     Asteroid() {
         sprite = LoadTexture("assets/sprites/AsteroidBrown.png");   // object sprite sheet
         frameWidth = sprite.width;                                  // Width of object
-        frameHeight = sprite.height;                                // Height of object
+        frameHeight = sprite.height;                                // Height of object   
+        travelSpeed = 0.05f;                                         // object speed
         travelDistance = 0.0f;
         pos = {0.0f,-frameHeight};                                  // XY position
         firstTime = true;                                          // Set to true
@@ -31,7 +32,6 @@ struct Asteroid {
     }
 
     void updateAsteroid(int frequency, float startMod, float horizontalMovement) {
-        travelSpeed = 5.05f - (gameSpeed * 5.0f);
         if (frameCounter % frequency == 0 && !firstTime)
             {
                 active = true;
@@ -47,7 +47,9 @@ struct Asteroid {
             rec = { 0.0f, 0.0f, frameWidth, frameHeight};
             // Asteroid position
             pos = {pos.x, pos.y + travelDistance};
-            travelDistance += travelSpeed;
+            travelDistance += travelSpeed + ((1.0f - gameSpeed) / 2);
+            float output = travelSpeed + ((1.0f - gameSpeed) / 2);
+            std::cout <<  output << std::endl;
             hitBox = {pos.x, pos.y, frameWidth, frameHeight};
             if (pos.y > winHeight)
             {

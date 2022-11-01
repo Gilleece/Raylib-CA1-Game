@@ -7,7 +7,7 @@ const int winHeight = 900;
 const int winWidth = 700;
 
 // Game speed
-float gameSpeed = 0.1f;
+float gameSpeed = 1.0f;
 
 // Game progress
 int frameCounter = 0; // For tracking progress of the level, when to spawn enemies etc
@@ -43,6 +43,7 @@ drawUI() {
 
 
 checkGameState(int *lives, Vector2 *shipPos, Vector2 *shipVel, Vector2 startPos) {
+    if (frameCounter % 600 == 0 && gameSpeed > 0.1f) {gameSpeed -= 0.1f; std::cout << gameSpeed << std::endl;}
     if (*lives == 0) {gameOver = true;}
     if (gameOver) {
         gameOverText = "Game Over!";

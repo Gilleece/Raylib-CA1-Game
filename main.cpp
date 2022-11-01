@@ -99,7 +99,6 @@ int main()
             }
             
             checkGameState(&playerShip.lives, &playerShip.shipPos, &playerShip.shipVel, playerShip.startPos);
-            std::cout << playerShip.lives << std::endl;
             drawUI();
         EndDrawing();
     }
