@@ -58,9 +58,11 @@ int main()
 
                 ////////////////////////////
                 // Player bullet loop
-                ////////////////////////////       
-                if (frameCounter % (int)(bullet[currentBullet].fireDelayCounter * gameSpeed) == 0 && IsKeyDown(KEY_SPACE))
+                ////////////////////////////
+                fireRateCounter++;       
+                if (fireRateCounter > fireRate && IsKeyDown(KEY_SPACE))
                 {
+                    fireRateCounter = 0;
                     if (bullet[currentBullet].active == false) { bullet[currentBullet].active = true; }                
                     currentBullet++;
                     if (currentBullet >= maxBullets - 1){
@@ -99,6 +101,7 @@ int main()
             }
             
             checkGameState(&playerShip.lives, &playerShip.shipPos, &playerShip.shipVel, playerShip.startPos);
+            std::cout << playerShip.lives << std::endl;
             drawUI();
         EndDrawing();
     }

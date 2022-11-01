@@ -48,8 +48,6 @@ struct Asteroid {
             // Asteroid position
             pos = {pos.x, pos.y + travelDistance};
             travelDistance += travelSpeed + ((1.0f - gameSpeed) / 2);
-            float output = travelSpeed + ((1.0f - gameSpeed) / 2);
-            std::cout <<  output << std::endl;
             hitBox = {pos.x, pos.y, frameWidth, frameHeight};
             if (pos.y > winHeight)
             {
