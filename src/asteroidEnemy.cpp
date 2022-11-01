@@ -32,13 +32,13 @@ struct Asteroid {
     }
 
     void updateAsteroid(int frequency, float startMod, float horizontalMovement) {
-        if (frameCounter % frequency == 0 && !firstTime)
+        if (frameCounter % frequency == 0 && firstTime)
             {
                 active = true;
                 pos.x += startMod;
                 firstTime = false;
             } 
-            else if (frameCounter % frequency == 0) 
+            else if (frameCounter % frequency == 0 && frameCounter > 300) 
             {
                 active = true;
             }

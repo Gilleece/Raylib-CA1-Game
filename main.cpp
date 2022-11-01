@@ -27,6 +27,11 @@ int main()
     ////////////////////////////
     // Create game objects
     ////////////////////////////
+    Background startBackground(
+        LoadTexture("assets/backgrounds/bg1.png"),
+        LoadTexture("assets/backgrounds/ol1.png"),
+        LoadTexture("assets/backgrounds/ol4.png")
+        );   
     Background background(
         LoadTexture("assets/backgrounds/bg2.png"),
         LoadTexture("assets/backgrounds/ol2.png"),
@@ -48,7 +53,13 @@ int main()
         frameCounter++;
         BeginDrawing();
             ClearBackground(BLACK);                 // Clear the background and paint it black, not strictly necessary but handy for debugging
-            if (!gameOver)
+            if (startScreen) {
+                gameSpeed = 2.0f;
+                startBackground.drawBackground();
+                drawStartScreen();
+            }
+
+            else if (!gameOver)
             {
                 background.drawBackground();            // Background call per frame
                 playerShip.drawShip();                  // Ship call per frame   
@@ -56,11 +67,11 @@ int main()
                 ////////////////////////////
                 // Enemies
                 ////////////////////////////                           
-                asteroid1.updateAsteroid(600, 450.0f, 200.0f);     
-                asteroid2.updateAsteroid(500, 120.0f, 120.0f);     
-                asteroid3.updateAsteroid(100, 300.0f, 80.0f);     
-                asteroid4.updateAsteroid(200, 350.0f, 160.0f);     
-                asteroid5.updateAsteroid(400, 200.0f, 250.0f);     
+                asteroid1.updateAsteroid(30, 40.0f, 30.0f);     
+                asteroid2.updateAsteroid(20, 600.0f, 50.0f);     
+                asteroid3.updateAsteroid(50, 120.0f, 100.0f);     
+                asteroid4.updateAsteroid(70, 450.0f, 180.0f);     
+                asteroid5.updateAsteroid(90, 300.0f, 270.0f);     
 
                 ////////////////////////////
                 // Player bullet loop
@@ -110,8 +121,12 @@ int main()
                 }
             }
             
-            checkGameState(&playerShip.lives, &playerShip.shipPos, &playerShip.shipVel, playerShip.startPos);
-            drawUI(mainFont, playerShip.lives);
+            if (!startScreen)
+            {
+                checkGameState(&playerShip.lives, &playerShip.shipPos, &playerShip.shipVel, playerShip.startPos);
+                drawUI(mainFont, playerShip.lives);
+            }
+            
         EndDrawing();
     }
 

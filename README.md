@@ -5,14 +5,14 @@ To do:
 
 
 Required:
-- UI
 - Music
 - Start screen
-- Medium enemy
-- Large enemy
+- Homing enemy
+- Add loads of comments
 
 Nice to have:
 
+- Shooting enemy
 - Player gun cool down
 - Pick ups
 - Bomb

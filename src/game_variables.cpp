@@ -11,6 +11,7 @@ float gameSpeed = 1.0f;
 
 // Game progress
 int frameCounter = 0; // For tracking progress of the level, when to spawn enemies etc
+int startScreen = true;
 
 // Tracking variables
 int playerScore = 0;
@@ -23,9 +24,13 @@ bool gameOver = false;
 
 
 // Text
+const char* startScreenText = nullptr;
+const char* startScreenSubText = nullptr;
+const char* playText = nullptr;
 const char* gameOverText = nullptr;
 const char* replayText = nullptr;
 const char* scoreText = "SCORE: ";
+int textOpacity = 255;
 
 // Elements
 Texture2D lifeSprite;
@@ -37,7 +42,8 @@ void initUI() {
 }
 
 
-void drawUI(Font mainFont, int lives) {
+void drawUI(Font mainFont, int lives) 
+{
     //Draw Score
     DrawTextEx(mainFont, scoreText, (Vector2) {10.0f, 10.0f }, (float)mainFont.baseSize, 0, RED);
     DrawTextEx(mainFont, TextFormat("%05i", playerScore), (Vector2) {160.0f, 10.0f }, (float)mainFont.baseSize, 0, RED); // The 05 in %05i is to format the score to 5 zeroes, purely for aesthetic purporses
@@ -55,7 +61,32 @@ void drawUI(Font mainFont, int lives) {
         int replayTextWidth = MeasureText(replayText, 30);
         DrawText(gameOverText, GetScreenWidth() / 2 - textWidth / 2, GetScreenHeight() / 2 - 30, 60, GOLD);
         DrawText(replayText, GetScreenWidth() / 2 - replayTextWidth / 2, GetScreenHeight() / 2 + 60, 30, RED);
+        
     }    
+}
+
+void drawStartScreen()
+{
+    if (IsKeyPressed(KEY_ENTER) && startScreen)
+    {
+        gameSpeed = 1.0f;
+        startScreenText = nullptr;
+        startScreen = false;
+        frameCounter = 0;
+    }
+    
+    startScreenText = "SPACE FIGHTER";
+    startScreenSubText = "A very original name";
+    playText = "Press ENTER to play!";
+    int startScreenTextWidth = MeasureText(startScreenText, 60);
+    int subWidth = MeasureText(startScreenSubText, 30);
+    int playTextWidth = MeasureText(playText, 45);
+    DrawText(startScreenText, GetScreenWidth() / 2 - startScreenTextWidth / 2, GetScreenHeight() / 2 - 30, 60, BLUE);
+    DrawText(startScreenSubText, GetScreenWidth() / 2 - subWidth / 2, GetScreenHeight() / 2 + 60, 30, GOLD);
+    textOpacity = (textOpacity > 0) ? textOpacity -= 5 : textOpacity = 255;
+    DrawText(playText, GetScreenWidth() / 2 - playTextWidth / 2, GetScreenHeight() - 60, 45, CLITERAL(Color){ 255, 255, 255, (unsigned char)textOpacity});
+    
+
 }
 
 
