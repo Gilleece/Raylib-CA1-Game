@@ -1,3 +1,8 @@
+#include <string>
+#include <iostream>
+#include "raylib.h"
+#include "raymath.h"
+
 ////////////////////////////
 // General Game Loop
 ////////////////////////////
@@ -24,7 +29,6 @@ bool gameOver = false;
 
 
 // Text
-const char* startScreenText = nullptr;
 const char* startScreenSubText = nullptr;
 const char* playText = nullptr;
 const char* gameOverText = nullptr;
@@ -35,10 +39,14 @@ int textOpacity = 255;
 // Elements
 Texture2D lifeSprite;
 Rectangle lifeRec;
+Texture2D logo;
+Rectangle logoRec;
 
 void initUI() {
     lifeSprite = LoadTexture("assets/sprites/shipLife.png");
     lifeRec = {0, 0, (float)lifeSprite.width, (float)lifeSprite.height};
+    logo = LoadTexture("assets/misc/gameLogo.png");
+    logoRec = {0, 0, (float)logo.width, (float)logo.height};
 }
 
 
@@ -70,21 +78,18 @@ void drawStartScreen()
     if (IsKeyPressed(KEY_ENTER) && startScreen)
     {
         gameSpeed = 1.0f;
-        startScreenText = nullptr;
         startScreen = false;
         frameCounter = 0;
     }
-    
-    startScreenText = "SPACE FIGHTER";
+
     startScreenSubText = "A very original name";
     playText = "Press ENTER to play!";
-    int startScreenTextWidth = MeasureText(startScreenText, 60);
     int subWidth = MeasureText(startScreenSubText, 30);
     int playTextWidth = MeasureText(playText, 45);
-    DrawText(startScreenText, GetScreenWidth() / 2 - startScreenTextWidth / 2, GetScreenHeight() / 2 - 30, 60, BLUE);
-    DrawText(startScreenSubText, GetScreenWidth() / 2 - subWidth / 2, GetScreenHeight() / 2 + 60, 30, GOLD);
-    textOpacity = (textOpacity > 0) ? textOpacity -= 5 : textOpacity = 255;
-    DrawText(playText, GetScreenWidth() / 2 - playTextWidth / 2, GetScreenHeight() - 60, 45, CLITERAL(Color){ 255, 255, 255, (unsigned char)textOpacity});
+    DrawTextureRec(logo, logoRec, (Vector2){(float)GetScreenWidth() / 2 - logo.width / 2, (float)GetScreenHeight() / 2 - logo.height}, WHITE);
+    DrawText(startScreenSubText, GetScreenWidth() / 2 - subWidth / 2, GetScreenHeight() / 2 - 30, 30, GOLD);
+    if (textOpacity > 0) {textOpacity -= 5;} else {textOpacity = 255;};  
+    DrawText(playText, GetScreenWidth() / 2 - playTextWidth / 2, GetScreenHeight() - 120, 45, CLITERAL(Color){ 255, 255, 255, (unsigned char)textOpacity});
     
 
 }
