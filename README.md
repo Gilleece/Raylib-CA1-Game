@@ -5,6 +5,7 @@ To do:
 
 
 Required:
+- Add instructions to start screen
 - Music
 - Start screen
 - Homing enemy
