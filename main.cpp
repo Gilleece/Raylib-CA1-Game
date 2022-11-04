@@ -25,7 +25,7 @@ int main()
 
 
     ////////////////////////////
-    // Create game objects
+    // Create game objaects
     ////////////////////////////
     Background startBackground(
         LoadTexture("assets/backgrounds/bg1.png"),
@@ -129,18 +129,17 @@ int main()
             
         EndDrawing();
     }
-
     ////////////////////////////
     // Tidying up
-    ////////////////////////////
-    CloseWindow();                                  // Close the window
-    background.unloadBackground();                  // Free memory
-    playerShip.UnloadShip();                        // Free memory
+    ////////////////////////////            
+    playerShip.UnloadShip();                 // Free Memory                   
     for (int i = 0; i < maxBullets; i++)
     {
         bullet[i].unloadBullet();
-    }
+    }                                        // Loop through all bullets and free memory
+    startBackground.unloadBackground();      // Free Memory                           
+    background.unloadBackground();           // Free Memory
+    CloseWindow();                           // Close the window
     
-    
-    return 0;                                       // Successful exit code
+    return 0;                                // Successful exit code
 }
