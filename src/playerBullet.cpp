@@ -32,55 +32,54 @@ struct Bullet {
         bulletFrameHeight = bulletSprite.height / 2.0f;                   // Height of a bullet
         bulletType = 0;                                                   // Switch through the 2 available bullet types
         bulletFrame = 0.0f;                                               // Tracks the current animation frame
-        fireDelayCounter = 30;                                             // Stops bullet spam, allows mechanical tweaking
-        bulletSpeed = 15.0f;                                               // projectile speed
+        fireDelayCounter = 30;                                            // Stops bullet spam, allows mechanical tweaking
+        bulletSpeed = 15.0f;                                              // projectile speed
         bulletTravel = 0.0f;                                              // Distance travelled of bullet
         fired = false;                                                    // To track bullet state
         active = false;                                                   // Set to false initially
     }
 
-    void updateBullet(Vector2 startPos, float shipHeight, float shipWidth) {
-        if (!fired)
-        {
-            currentPos = startPos;
-            fired = true;
-            bulletPos = {currentPos.x + shipWidth / 5 + 1.0f, currentPos.y - bulletTravel - shipHeight / 5};
+    void updateBullet(Vector2 startPos, float shipHeight, float shipWidth) {                                    // Function to call to update bullets
+        if (!fired)                                                                                             // If fired
+        {           
+            currentPos = startPos;                                                                              // Set the currentPosition to the start position passed though
+            fired = true;                                                                                       // Set to fired 
+            bulletPos = {currentPos.x + shipWidth / 5 + 1.0f, currentPos.y - bulletTravel - shipHeight / 5};    // Update the bullet position to the initial frame at the tip of ship
         }
         
-        if (fired)
+        if (fired)                                                                                              // If bullet has been fired
         {
-            bulletRec = { bulletFrame, bulletType, (float)bulletFrameWidth, (float)bulletFrameHeight};
-            // Bullet position
-            bulletPos = {currentPos.x + shipWidth / 5 + 1.0f, currentPos.y - bulletTravel - shipHeight / 5};
-            hitBox = {bulletPos.x, bulletPos.y, bulletFrameWidth, bulletFrameHeight};
-            bulletTravel += bulletSpeed - (gameSpeed * 5.0f);
+            bulletRec = { bulletFrame, bulletType, (float)bulletFrameWidth, (float)bulletFrameHeight};          // Set rectangle for drawing sprite onto, including the type of bullet by the Y axis
+            bulletPos = {currentPos.x + shipWidth / 5 + 1.0f, currentPos.y - bulletTravel - shipHeight / 5};    // Set the bullet position, initially at the middle tip of the front of the ship
+            hitBox = {bulletPos.x, bulletPos.y, bulletFrameWidth, bulletFrameHeight};                           // Set the hitboxc position as the same
+            bulletTravel += bulletSpeed - (gameSpeed * 5.0f);                                                   // Increment bullet travel based on game speed
 
-            if (bulletPos.y < 0)
+            if (bulletPos.y < 0)                                                                                // If bullet goes off the top edge of the screen
             {
-                resetBullet();                
+                resetBullet();                                                                                  // Call the function to reset it so that it can be used later
             }
             
 
             // Checks whether to alternate bullet animation sprite and then resets counter
-            if (frameCounter % 5 == 0)
+            if (frameCounter % 5 == 0)                                                                // If statement based on framecounter controls speed of animation
                 {
                     bulletFrame == 0.0f ? bulletFrame = bulletFrameWidth - 4.0f : bulletFrame = 0.0f; // Flip the frame horizontally, the -8 is to correct for the sprite sheet not being centered
                 }
             
-            DrawTextureRec(bulletSprite, bulletRec, bulletPos, WHITE);
+            DrawTextureRec(bulletSprite, bulletRec, bulletPos, WHITE);                                // Draw the bullet
         }
     }
 
-    void resetBullet() 
+    void resetBullet()                                                                                // Function for resetting the bullet, hence the name "resetBullet". 
     {
-        bulletTravel = 0.0f;
-        active = false;
-        fired = false;
+        bulletTravel = 0.0f;                                                                          // Set the travel amount of bullet to 0
+        active = false;                                                                               // Set bullet to not active, this means it isn't shown or have any effect etc
+        fired = false;                                                                                // Set fired to false
     }
 
-    void unloadBullet() 
+    void unloadBullet()                                                                               // Function for garbage collection
     {
-        UnloadTexture(bulletSprite);
+        UnloadTexture(bulletSprite);                                                                  // Unload the bullet texture/sprite
     }
 };
 
