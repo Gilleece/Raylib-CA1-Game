@@ -99,7 +99,7 @@ int main()
                 ////////////////////////////
                 
                 //Ship hits
-                if (playerShip.alive && frameCounter > 120) // Added min frame counter to counteract hitboxs spawning on top of eachother before positioned (I fixed this bug actually but left it is as an initial period, like invincibility frames)
+                if (playerShip.alive) // Only check for collisions if ship is alive
                 {
                     //Asteroids
                     if (CheckCollisionRecs(playerShip.hitBox, asteroid1.hitBox) && asteroid1.destroyed == false) { playerShip.alive = false; }; // Check for collision between the ship and an asteroid

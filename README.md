@@ -20,3 +20,7 @@ Nice to have:
 
 
 Note: Variables etc are verbosely named within this project due to its academic nature.
+
+Known bugs:
+
+- Ship continues to move direction held on death when respawned (Turn off listener for key on death)

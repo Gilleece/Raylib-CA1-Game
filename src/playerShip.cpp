@@ -5,33 +5,30 @@
 
 //Declaring ship struct
 struct PlayerShip {
-    //Ship Sprite
-    Texture2D shipSprite = LoadTexture("assets/sprites/ship.png");      // Ship sprite sheet
-    float shipFrameWidth = shipSprite.width / 5.0f;                     // Get the width of a single frame
-    float shipFrameHeight = shipSprite.height / 2.0f;                   // Get the height of a single frame
-    float shipFrameMod = 2.0f;                                          // Multiplier for cycling through frames, set here to enable switching spritesheet later for more animation frames if desired 
-    float currentShipFrame = shipFrameWidth * shipFrameMod;             // Set the current frame
-    Rectangle spriteRec;                                                // Ractangle for drawing the frame onto
-    //Death Sprite
-    Texture2D deathSprite = LoadTexture("assets/sprites/shipExplosion.png");    // Ship sprite sheet, not actually used to display the sprite sheet, it is just loaded here to calculate size
-    float deathFrameWidth = deathSprite.width / 4.0f;                           // Get the width of a single frame
-    float deathFrameHeight = deathSprite.height / 4.0f;                         // Get the height of a single frame
-    float deathFrameY = 0.0f;                                                   // Multiplier for cycling through frames, set here to enable switching spritesheet later for more animation frames if desired 
-    float currentDeathFrame = deathFrameWidth * deathFrameY;                    // Set the current frame
-    Rectangle deathSpriteRec;                                                   // Ractangle for drawing the frame
-    bool deathAnimationComplete = false;                                        // Used to see if the death animation is complete before carrying out the rest of the death mechanic
-
-    float shipFlameFrame = 0;                                                                   // Used to switch vertically to flicker the flame
-    int flameSpeedCounter = 0;                                                                  // Used to calculate the speed of the flame flicker
-    float shipSpeed;                                                                            // Used to modify ship speed
-    Rectangle hitBox;                                                                           // Hitbox for ship
-    Vector2 shipPos = {winWidth / 2.0f - (shipSprite.width / 10), winHeight - (winHeight / 4)}; // Ship position
-    Vector2 startPos = {winWidth / 2.0f - (shipSprite.width / 10), winHeight - (winHeight / 4)};// For quick reference on replay
-    Vector2 shipVel = {0.0f,0.0f};                                                              // Ship velocity
-    bool alive = true;                                                                          // Mark ship as alive
-    int lives = 3;                                                                              // Set number of lives
-    int invincibleFrames = 60;                                                                  // Invicibility frames so player can't instantly die again is spawn position is currently in contact with a hostile
-    int opacity = 255;                                                                          // Used to control transparency of ship, used for the animation on respawn
+    Texture2D shipSprite = LoadTexture("assets/sprites/ship.png");                               // Ship sprite sheet
+    float shipFrameWidth = shipSprite.width / 5.0f;                                              // Get the width of a single frame
+    float shipFrameHeight = shipSprite.height / 2.0f;                                            // Get the height of a single frame
+    float shipFrameMod = 2.0f;                                                                   // Multiplier for cycling through frames, set here to enable switching spritesheet later for more animation frames if desired 
+    float currentShipFrame = shipFrameWidth * shipFrameMod;                                      // Set the current frame
+    Rectangle spriteRec;                                                                         // Ractangle for drawing the frame onto
+    Texture2D deathSprite = LoadTexture("assets/sprites/shipExplosion.png");                     // Ship sprite sheet for the death explosion, not actually used to display the sprite sheet, it is just loaded here to calculate size
+    float deathFrameWidth = deathSprite.width / 4.0f;                                            // Get the width of a single frame
+    float deathFrameHeight = deathSprite.height / 4.0f;                                          // Get the height of a single frame
+    float deathFrameY = 0.0f;                                                                    // Multiplier for cycling through frames, set here to enable switching spritesheet later for more animation frames if desired 
+    float currentDeathFrame = deathFrameWidth * deathFrameY;                                     // Set the current frame
+    Rectangle deathSpriteRec;                                                                    // Ractangle for drawing the frame
+    bool deathAnimationComplete = false;                                                         // Used to see if the death animation is complete before carrying out the rest of the death mechanic
+    float shipFlameFrame = 0;                                                                    // Used to switch vertically to flicker the flame
+    int flameSpeedCounter = 0;                                                                   // Used to calculate the speed of the flame flicker
+    float shipSpeed;                                                                             // Used to modify ship speed
+    Rectangle hitBox;                                                                            // Hitbox for ship
+    Vector2 shipPos = {winWidth / 2.0f - (shipSprite.width / 10), winHeight - (winHeight / 4)};  // Ship position
+    Vector2 startPos = {winWidth / 2.0f - (shipSprite.width / 10), winHeight - (winHeight / 4)}; // For quick reference on replay
+    Vector2 shipVel = {0.0f,0.0f};                                                               // Ship velocity
+    bool alive = true;                                                                           // Mark ship as alive
+    int lives = 3;                                                                               // Set number of lives
+    int invincibleFrames = 60;                                                                   // Invicibility frames so player can't instantly die again is spawn position is currently in contact with a hostile
+    int opacity = 255;                                                                           // Used to control transparency of ship, used for the animation on respawn
 
     void updateShip() {                                                                                     // Primary function called to update the ship and control it
     if (alive || invincibleFrames < 60)                                                                     // Check if ship is alive or if the ship is going through the "invincible frames" animation
@@ -86,7 +83,7 @@ struct PlayerShip {
                 shipVel.x = 0.0f;                                                                               //Set velocity to zero
                 currentShipFrame = shipFrameWidth * shipFrameMod;                                               //Update current frame
             }
-    //Up
+        //Up
         if (IsKeyDown(KEY_UP) || IsKeyDown(KEY_W)) {                                                            //Check if key is being pressed
             //Update Position
             shipPos.y > 0 ? shipVel.y = -2.5f * shipSpeed : shipVel.y = 0.0f;                                   // Check if current position is within the window, add velocity if true or set to 0 if false;
@@ -107,6 +104,7 @@ struct PlayerShip {
         //Update Position
         shipPos.x += shipVel.x;                                                                                 // Update ship x position  based on x velocity
         shipPos.y += shipVel.y;                                                                                 // Update ship x position  based on y velocity
+        shipVel = {0.0f, 0.0f};                                                                                 // Resets velocity to zero, this is to avoid a player death causing a runaway loop in that it keeps the velocity that was present on death, while ignoring and check to make the ship remains in the window etc. 
         }
     }
 
