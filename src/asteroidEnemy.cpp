@@ -3,7 +3,7 @@
 #include "raylib.h"
 #include "raymath.h"
 
-// Declaring bullet struct
+// Declaring asteroid struct
 struct Asteroid {
     Texture2D sprite;    // object sprite sheet
     float frameWidth;    // Width of object

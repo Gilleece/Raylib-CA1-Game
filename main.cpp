@@ -8,6 +8,7 @@
 #include "src/asteroidEnemy.cpp"                // However I had a particularly awkward IDE setup (VS Code on linux beta for chromebook, only device I had on the go)
 #include "src/playerShip.cpp"                   // Due to this it was easier to just organise code by including the files directly rather than with headers
 #include "src/playerBullet.cpp"                 // Just wanted to note this here
+#include "src/homingEnemy.cpp"
 
 
 
@@ -44,6 +45,8 @@ int main()
     Asteroid asteroid3;                             // Create Asteroid object
     Asteroid asteroid4;                             // Create Asteroid object
     Asteroid asteroid5;                             // Create Asteroid object
+    Homer homer1;                                   // Create Homer object
+    Homer homer2;                                   // Create Homer object
 
     ////////////////////////////
     // Gameloop
@@ -66,13 +69,17 @@ int main()
 
                 ////////////////////////////
                 // Enemies
-                ////////////////////////////                           
+                //////////////////////////// 
+                // Asteroid                          
                 asteroid1.updateAsteroid(30, 40.0f, 30.0f);     // Updates the aesteroid on each frame, the parameters passed through are
                 asteroid2.updateAsteroid(20, 600.0f, 50.0f);    // in order: frequency, startMod and horizontalMovement
                 asteroid3.updateAsteroid(90, 120.0f, 100.0f);   // Frequency: How often the aestroid falls down the screen
                 asteroid4.updateAsteroid(70, 450.0f, 180.0f);   // StartMod: A modifier to set the initial horizontal position so that the aesteroids each exhibit individual behaviour
                 asteroid5.updateAsteroid(5, 300.0f, 270.0f);   // horizontalMovement: How much the aesteroid moves across the screen upon each loop of its behaviour
 
+                //Homer
+                homer1.updateHomer(400, 150.0f, 200.0f, playerShip.getShipPos());
+                homer2.updateHomer(900, 150.0f, 200.0f, playerShip.getShipPos());
                 ////////////////////////////
                 // Player bullet loop
                 ////////////////////////////
@@ -107,6 +114,11 @@ int main()
                     if (CheckCollisionRecs(playerShip.hitBox, asteroid3.hitBox) && asteroid3.destroyed == false) { playerShip.alive = false; }; // I deliberately do not destroy the asteroids as it makes more sense in my mind that the aesteroid would carry on unhindered
                     if (CheckCollisionRecs(playerShip.hitBox, asteroid4.hitBox) && asteroid4.destroyed == false) { playerShip.alive = false; }; 
                     if (CheckCollisionRecs(playerShip.hitBox, asteroid5.hitBox) && asteroid5.destroyed == false) { playerShip.alive = false; };
+
+                    // Homers
+                    if (CheckCollisionRecs(playerShip.hitBox, homer1.hitBox) && homer1.destroyed == false) { playerShip.alive = false; homer1.destroyed= true; };
+                    if (CheckCollisionRecs(playerShip.hitBox, homer2.hitBox) && homer2.destroyed == false) { playerShip.alive = false; homer2.destroyed= true; };
+
                 }
                 //Bullet hits
                 for (int i = 0; i < maxBullets; i++)                                                                                            // Loop through the bullets
@@ -117,6 +129,8 @@ int main()
                         if (CheckCollisionRecs(bullet[i].hitBox, asteroid3.hitBox)) { bullet[i].resetBullet(); asteroid3.destroyed = true; };   // Anyway, upon a collision the bullet is reset. This behaviour seems more logcial to me, having the bullet disappear. A potential power up would be "super bullets" that don't disappear and carry on and can hit another enemy in its path. What a classic!
                         if (CheckCollisionRecs(bullet[i].hitBox, asteroid4.hitBox)) { bullet[i].resetBullet(); asteroid4.destroyed = true; };   // The aestroid is marked as destroyed, which the asteroid update loop handles
                         if (CheckCollisionRecs(bullet[i].hitBox, asteroid5.hitBox)) { bullet[i].resetBullet(); asteroid5.destroyed = true; };
+                        if (CheckCollisionRecs(bullet[i].hitBox, homer1.hitBox)) { bullet[i].resetBullet(); homer1.destroyed = true; };
+                        if (CheckCollisionRecs(bullet[i].hitBox, homer2.hitBox)) { bullet[i].resetBullet(); homer2.destroyed = true; };
                     }
                 }
             }
