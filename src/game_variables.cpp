@@ -41,12 +41,16 @@ Texture2D lifeSprite;                       // Create object for the life textur
 Rectangle lifeRec;                          // Create object for the life texture rectangle
 Texture2D logo;                             // Create object for the logo texture
 Rectangle logoRec;                          // Create object for the logo texture rectangle
+Texture2D controlsImage;                    // Create object for the controls image
+Rectangle controlsRec;                      // Create object for the controls image rectangle
 
 void initUI() {
-    lifeSprite = LoadTexture("assets/sprites/shipLife.png");                // Load the life sprite
-    lifeRec = {0, 0, (float)lifeSprite.width, (float)lifeSprite.height};    // Set the sprite frame within the rectangle
-    logo = LoadTexture("assets/misc/gameLogo.png");                         // load the startscreen logo image
-    logoRec = {0, 0, (float)logo.width, (float)logo.height};                // Set the frame within the rectangle
+    lifeSprite = LoadTexture("assets/sprites/shipLife.png");                     // Load the life sprite
+    lifeRec = {0, 0, (float)lifeSprite.width, (float)lifeSprite.height};         // Set the sprite frame within the rectangle
+    logo = LoadTexture("assets/misc/gameLogo.png");                              // load the startscreen logo image
+    logoRec = {0, 0, (float)logo.width, (float)logo.height};                     // Set the frame within the rectangle
+    controlsImage = LoadTexture("assets/misc/controls.png");                     // Load the controls image
+    controlsRec = {0,0, (float)controlsImage.width, (float)controlsImage.height};// Set the frame within the rectangle
 }
 
 
@@ -86,11 +90,11 @@ void drawStartScreen()                              // Function to call to draw 
     playText = "Press ENTER to play!";                              // Set more text
     int subWidth = MeasureText(startScreenSubText, 30);             // Measure the text size for positioning
     int playTextWidth = MeasureText(playText, 45);                  // Same as prior line
-    DrawTextureRec(logo, logoRec, (Vector2){(float)GetScreenWidth() / 2 - logo.width / 2, (float)GetScreenHeight() / 3 - logo.height}, WHITE);              // Draw the logo image
-    DrawText(startScreenSubText, GetScreenWidth() / 2 - subWidth / 2, GetScreenHeight() / 3 - 30, 30, GOLD);                                                // Draw the text underneath the logo
-    if (textOpacity > 0) {textOpacity -= 5;} else {textOpacity = 255;};                                                                                     // Loop to check transparency of the text and to enable the flashing animation
-    DrawText(playText, GetScreenWidth() / 2 - playTextWidth / 2, GetScreenHeight() - 120, 45, CLITERAL(Color){ 255, 255, 255, (unsigned char)textOpacity}); // Draw this text, take in the opacity number being modified in the prior line
-    
+    DrawTextureRec(logo, logoRec, (Vector2){(float)GetScreenWidth() / 2 - logo.width / 2, (float)GetScreenHeight() / 3 - logo.height}, WHITE);                // Draw the logo image
+    DrawText(startScreenSubText, GetScreenWidth() / 2 - subWidth / 2, GetScreenHeight() / 3 - 30, 30, GOLD);                                                  // Draw the text underneath the logo
+    if (textOpacity > 0) {textOpacity -= 5;} else {textOpacity = 255;};                                                                                       // Loop to check transparency of the text and to enable the flashing animation
+    DrawText(playText, GetScreenWidth() / 2 - playTextWidth / 2, GetScreenHeight() - 120, 45, CLITERAL(Color){ 255, 255, 255, (unsigned char)textOpacity});   // Draw this text, take in the opacity number being modified in the prior line
+    DrawTextureRec(controlsImage, controlsRec, (Vector2){(float)GetScreenWidth() / 2 - controlsImage.width / 2, (float)GetScreenHeight() / 2 -100}, WHITE);   // Draw the controls image
 
 }
 
