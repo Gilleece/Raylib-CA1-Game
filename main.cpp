@@ -104,7 +104,6 @@ int main()
                         bullet[i].updateBullet(playerShip.getShipPos(), playerShip.shipFrameHeight, playerShip.shipFrameWidth); // Then update it, passing through the necessary parameters so that it can be drawn in the correct location
                     }
                 }
-
                 ////////////////////////////
                 // Collision detection
                 ////////////////////////////
@@ -113,28 +112,28 @@ int main()
                 if (playerShip.alive) // Only check for collisions if ship is alive
                 {
                     //Asteroids
-                    if (CheckCollisionRecs(playerShip.hitBox, asteroid1.hitBox) && asteroid1.destroyed == false) { playerShip.alive = false; }; // Check for collision between the ship and an asteroid
-                    if (CheckCollisionRecs(playerShip.hitBox, asteroid2.hitBox) && asteroid2.destroyed == false) { playerShip.alive = false; }; // If a collision happens then the playership is destroyed
-                    if (CheckCollisionRecs(playerShip.hitBox, asteroid3.hitBox) && asteroid3.destroyed == false) { playerShip.alive = false; }; // I deliberately do not destroy the asteroids as it makes more sense in my mind that the aesteroid would carry on unhindered
-                    if (CheckCollisionRecs(playerShip.hitBox, asteroid4.hitBox) && asteroid4.destroyed == false) { playerShip.alive = false; }; 
-                    if (CheckCollisionRecs(playerShip.hitBox, asteroid5.hitBox) && asteroid5.destroyed == false) { playerShip.alive = false; };
+                    if (CheckCollisionRecs(playerShip.hitBox, asteroid1.hitBox) && asteroid1.destroyed == false) { playerShip.deathLoop();}; // Check for collision between the ship and an asteroid
+                    if (CheckCollisionRecs(playerShip.hitBox, asteroid2.hitBox) && asteroid2.destroyed == false) { playerShip.deathLoop(); }; // If a collision happens then the playership is destroyed
+                    if (CheckCollisionRecs(playerShip.hitBox, asteroid3.hitBox) && asteroid3.destroyed == false) { playerShip.deathLoop(); }; // I deliberately do not destroy the asteroids as it makes more sense in my mind that the aesteroid would carry on unhindered
+                    if (CheckCollisionRecs(playerShip.hitBox, asteroid4.hitBox) && asteroid4.destroyed == false) { playerShip.deathLoop(); }; 
+                    if (CheckCollisionRecs(playerShip.hitBox, asteroid5.hitBox) && asteroid5.destroyed == false) { playerShip.deathLoop(); };
 
                     // Homers
-                    if (CheckCollisionRecs(playerShip.hitBox, homer1.hitBox) && homer1.destroyed == false) { playerShip.alive = false; homer1.destroyed= true; };
-                    if (CheckCollisionRecs(playerShip.hitBox, homer2.hitBox) && homer2.destroyed == false) { playerShip.alive = false; homer2.destroyed= true; };
+                    if (CheckCollisionRecs(playerShip.hitBox, homer1.hitBox) && homer1.destroyed == false) { playerShip.deathLoop(); homer1.destroyed= true; };
+                    if (CheckCollisionRecs(playerShip.hitBox, homer2.hitBox) && homer2.destroyed == false) { playerShip.deathLoop(); homer2.destroyed= true; };
 
                 }
                 //Bullet hits
-                for (int i = 0; i < maxBullets; i++)                                                                                            // Loop through the bullets
+                for (int i = 0; i < maxBullets; i++)                                                                                       // Loop through the bullets
                 {  
-                    if (bullet[i].active) {                                                                                                     // Check if the current bullet in the iteration is active
-                        if (CheckCollisionRecs(bullet[i].hitBox, asteroid1.hitBox)) { bullet[i].resetBullet(); asteroid1.destroyed = true; };   // If it's active then perform collision checks for each object that it can interact with 
-                        if (CheckCollisionRecs(bullet[i].hitBox, asteroid2.hitBox)) { bullet[i].resetBullet(); asteroid2.destroyed = true; };   // This collision code could have all probably been refactored into its own source file...I may or may not do that. I guess if you're reading this then you know how that went!
-                        if (CheckCollisionRecs(bullet[i].hitBox, asteroid3.hitBox)) { bullet[i].resetBullet(); asteroid3.destroyed = true; };   // Anyway, upon a collision the bullet is reset. This behaviour seems more logcial to me, having the bullet disappear. A potential power up would be "super bullets" that don't disappear and carry on and can hit another enemy in its path. What a classic!
-                        if (CheckCollisionRecs(bullet[i].hitBox, asteroid4.hitBox)) { bullet[i].resetBullet(); asteroid4.destroyed = true; };   // The aestroid is marked as destroyed, which the asteroid update loop handles
-                        if (CheckCollisionRecs(bullet[i].hitBox, asteroid5.hitBox)) { bullet[i].resetBullet(); asteroid5.destroyed = true; };
-                        if (CheckCollisionRecs(bullet[i].hitBox, homer1.hitBox)) { bullet[i].resetBullet(); homer1.destroyed = true; };
-                        if (CheckCollisionRecs(bullet[i].hitBox, homer2.hitBox)) { bullet[i].resetBullet(); homer2.destroyed = true; };
+                    if (bullet[i].active) {                                                                                                // Check if the current bullet in the iteration is active
+                        if (CheckCollisionRecs(bullet[i].hitBox, asteroid1.hitBox)) { bullet[i].resetBullet(); asteroid1.deathLoop(); };   // If it's active then perform collision checks for each object that it can interact with 
+                        if (CheckCollisionRecs(bullet[i].hitBox, asteroid2.hitBox)) { bullet[i].resetBullet(); asteroid2.deathLoop(); };   // This collision code could have all probably been refactored into its own source file...I may or may not do that. I guess if you're reading this then you know how that went!
+                        if (CheckCollisionRecs(bullet[i].hitBox, asteroid3.hitBox)) { bullet[i].resetBullet(); asteroid3.deathLoop(); };   // Anyway, upon a collision the bullet is reset. This behaviour seems more logcial to me, having the bullet disappear. A potential power up would be "super bullets" that don't disappear and carry on and can hit another enemy in its path. What a classic!
+                        if (CheckCollisionRecs(bullet[i].hitBox, asteroid4.hitBox)) { bullet[i].resetBullet(); asteroid4.deathLoop(); };   // The aestroid is marked as destroyed, which the asteroid update loop handles
+                        if (CheckCollisionRecs(bullet[i].hitBox, asteroid5.hitBox)) { bullet[i].resetBullet(); asteroid5.deathLoop(); };
+                        if (CheckCollisionRecs(bullet[i].hitBox, homer1.hitBox)) { bullet[i].resetBullet(); homer1.deathLoop(); };
+                        if (CheckCollisionRecs(bullet[i].hitBox, homer2.hitBox)) { bullet[i].resetBullet(); homer2.deathLoop(); };
                     }
                 }
             }

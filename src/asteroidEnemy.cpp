@@ -17,18 +17,21 @@ struct Asteroid {
     bool active;         // Bool to show if object still exists
     bool destroyed;      // Bool to show if destroyed
     int opacity;         // counter to handle opacity fade
+    Sound deathSound;    // For loading and playing the sound when destroyed
 
     Asteroid() {
-        sprite = LoadTexture("assets/sprites/AsteroidBrown.png");   // object sprite sheet
-        frameWidth = sprite.width;                                  // Width of object
-        frameHeight = sprite.height;                                // Height of object   
-        travelSpeed = 0.05f;                                        // object speed
-        travelDistance = 0.0f;                                      // Set the distance travelled to 0. IT HAS GONE NOWHERE YET!
-        pos = {0.0f,-frameHeight};                                  // XY position
-        firstTime = true;                                           // Set to true
-        active = false;                                             // Bool to show if object still exists
-        destroyed = false;                                          // If true then player has shot the asteroid
-        opacity = 255;                                              // Make completely non-transparent (What is the opposite of transparent? Oh, it's opaque...) Okay, let me say that again. Make completely opaque. That now makes sense why the opacity would be 255 and not 0, I always thought it was the opposite away around, but no.
+        sprite = LoadTexture("assets/sprites/AsteroidBrown.png");       // object sprite sheet
+        frameWidth = sprite.width;                                      // Width of object
+        frameHeight = sprite.height;                                    // Height of object   
+        travelSpeed = 0.05f;                                            // object speed
+        travelDistance = 0.0f;                                          // Set the distance travelled to 0. IT HAS GONE NOWHERE YET!
+        pos = {0.0f,-frameHeight};                                      // XY position
+        firstTime = true;                                               // Set to true
+        active = false;                                                 // Bool to show if object still exists
+        destroyed = false;                                              // If true then player has shot the asteroid
+        opacity = 255;                                                  // Make completely non-transparent (What is the opposite of transparent? Oh, it's opaque...) Okay, let me say that again. Make completely opaque. That now makes sense why the opacity would be 255 and not 0, I always thought it was the opposite away around, but no.
+        deathSound = LoadSound("assets/sounds/asteroidDestroyed.wav");  // Load sound of homer ship destroyed
+        SetSoundVolume(deathSound, 0.5f);                               // Set volume for the death sound
     }
 
     void updateAsteroid(int frequency, float startMod, float horizontalMovement) { // Function that handles updating the aesteroid on each frame
@@ -92,6 +95,12 @@ struct Asteroid {
             opacity = 255;                                                                              // Make fully opaque. Great word.
         }
     }
+
+    void deathLoop() {
+        PlaySound(deathSound);                                          // Play the death sound
+        destroyed = true;                                               // Set asteroid alive status to false, this then allows for the rest of the death logic to trigger        
+    }
+
     void unload() {                                                                                     // Function for unloading the texture
         UnloadTexture(sprite);                                                                          // Unload to free memory
     }

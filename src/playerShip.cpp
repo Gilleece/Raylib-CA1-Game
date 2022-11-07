@@ -29,6 +29,7 @@ struct PlayerShip {
     int lives = 3;                                                                               // Set number of lives
     int invincibleFrames = 60;                                                                   // Invicibility frames so player can't instantly die again is spawn position is currently in contact with a hostile
     int opacity = 255;                                                                           // Used to control transparency of ship, used for the animation on respawn
+    Sound deathSound = LoadSound("assets/sounds/playerDestroyed.wav");                           // Load the sound for when the player ship is destroyed
 
     void updateShip() {                                                                                     // Primary function called to update the ship and control it
     if (alive || invincibleFrames < 60)                                                                     // Check if ship is alive or if the ship is going through the "invincible frames" animation
@@ -178,8 +179,14 @@ struct PlayerShip {
         }
     }
 
+    void deathLoop() {                                                  // Function called when ship dies
+        PlaySound(deathSound);                                          // Play the death sound
+        alive = false;                                                  // Set ship alive status to false, this then allows for the rest of the death logic to trigger
+    }
+
     void UnloadShip() {                                                 // Function for garbage collection
         UnloadTexture(shipSprite);                                      // Unload the shipSprite
-        UnloadTexture(deathSprite);                                        // Unload the deathSprite
+        UnloadTexture(deathSprite);                                     // Unload the deathSprite
+        UnloadSound(deathSound);                                        // Unload the wav file for death
     }
 };

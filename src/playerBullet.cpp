@@ -24,7 +24,8 @@ struct Bullet {
     float bulletTravel;        // Distance travelled of bullet
     bool fired;                // To track bullet state
     bool active;               // Bool to show if bullet still exists
-    Rectangle hitBox;
+    Rectangle hitBox;          // Reactangle for the hitbox
+    Sound bulletSound;         // Bullet sound      
 
     Bullet() {
         bulletSprite = LoadTexture("assets/sprites/laser-bolts.png");     // Bullet sprite sheet
@@ -37,6 +38,7 @@ struct Bullet {
         bulletTravel = 0.0f;                                              // Distance travelled of bullet
         fired = false;                                                    // To track bullet state
         active = false;                                                   // Set to false initially
+        bulletSound = LoadSound("assets/sounds/bullet.wav");              // Load bullet wav
     }
 
     void updateBullet(Vector2 startPos, float shipHeight, float shipWidth) {                                    // Function to call to update bullets
@@ -45,6 +47,9 @@ struct Bullet {
             currentPos = startPos;                                                                              // Set the currentPosition to the start position passed though
             fired = true;                                                                                       // Set to fired 
             bulletPos = {currentPos.x + shipWidth / 5 + 1.0f, currentPos.y - bulletTravel - shipHeight / 5};    // Update the bullet position to the initial frame at the tip of ship
+            SetSoundVolume(bulletSound, 0.6);                                                                   // Make the sound quiet enough to be not irritating 
+            SetSoundPitch(bulletSound, float(GetRandomValue(90, 99)) / 100);                                    // Randomws sets the pitch between 0.90 and 0.99 to make the sound less repetitive
+            PlaySound(bulletSound);                                                                             // Play the bullet sound
         }
         
         if (fired)                                                                                              // If bullet has been fired

@@ -19,13 +19,15 @@ struct Homer {
     bool destroyed;      // Bool to show if destroyed
     int opacity;         // counter to handle opacity fade
     int colourFade;      // Used to shift colour on death 
+    Sound deathSound;    // Load the sound for when the homer ship is destroyed
+
 
     Homer() {
-        sprite = LoadTexture("assets/sprites/homerSprite.png");   // object sprite sheet
+        sprite = LoadTexture("assets/sprites/homerSprite.png");     // object sprite sheet
         frameWidth = sprite.width / 2;                              // Width of object
         frameHeight = sprite.height;                                // Height of object
         currentFrame = 0.0f;                                        // Init to zero   
-        travelSpeed = 4.0f;                                        // object speed
+        travelSpeed = 4.0f;                                         // object speed
         travelAmount = 0.0f;                                        // Set the distance travelled to 0.
         pos = {0.0f,-frameHeight};                                  // XY position
         firstTime = true;                                           // Set to true
@@ -33,6 +35,8 @@ struct Homer {
         destroyed = false;                                          // If true then player has shot the Homer
         opacity = 255;                                              // Make completely non-transparent (What is the opposite of transparent? Oh, it's opaque...) Okay, let me say that again. Make completely opaque. That now makes sense why the opacity would be 255 and not 0, I always thought it was the opposite away around, but no.
         colourFade = 255;                                           // Set colours to default
+        deathSound = LoadSound("assets/sounds/homerDestroyed.wav"); // Load sound of homer ship destroyed
+        SetSoundVolume(deathSound, 0.5f);                           // Set volume for the death sound
     }
 
     void updateHomer(int frequency, float startMod, float horizontalMovement, Vector2 targetPos) { // Function that handles updating the homer on each frame
@@ -51,26 +55,27 @@ struct Homer {
             rec = { currentFrame, 0.0f, frameWidth, frameHeight};                  // Set the rectangle to drawn on as the sprite width and height, 0,0 vector to draw as is
             travelAmount = travelSpeed + ((1.0f - gameSpeed) / 2);                 // Update travel amount
             // Homing behaviour
-            if (pos.x <= targetPos.x)
+            if (pos.x <= targetPos.x)                                              // If the X position of the enemy is less than the ship
             {
-                pos.x += travelAmount / 2;
+                pos.x += travelAmount;                                             // Increment towards ship
             }
-            else if (pos.x >= targetPos.x) {
-                pos.x -= travelAmount / 2;
+            else if (pos.x >= targetPos.x)                                        // Vice versa
+            {                                       
+                pos.x -= travelAmount;                                            // Decrement (also towards)
             }
-            if (pos.y <= targetPos.y)
+            if (pos.y <= targetPos.y)                                             // Y acts similar on the approach from above
             {
-                pos.y += travelAmount;
+                pos.y += travelAmount * 3;                                        // It's much faster to make it more fun
             }
-            else if (pos.y >= targetPos.y) {
-                pos.y -= travelAmount;
+            else if (pos.y >= targetPos.y) {                                      // However, if it goes beyond the player
+                pos.y += travelAmount * 5;                                        // Then it zooms off screen (homing in from beneath didn't feel fun)
             }
             hitBox = {pos.x, pos.y, frameWidth, frameHeight};                      // Draw the hit box for collision detection. As detractors of MC hammer would say "You can indeed touch this"
             if (pos.y > winHeight)                                                 // If Homer goes beyond the bottom of the scrteen 
             {
                 active = false;                                                    // Set it as inactive
                 pos.y = -frameHeight;                                              // Set the y position to negativeFrameheight
-                travelAmount = 0.0f;                                             // Reset travel distance to 0
+                travelAmount = 0.0f;                                               // Reset travel distance to 0
                 hitBox = {-100, -100, 0, 0};                                       // This sets the hitbox in an arbitrary off screen location to stop hitbox blocking bullets or movement after Homer is destroyed
                 if (pos.x >= winHeight - frameWidth)                               // if the position of the aesteroid is beyonc the right hand side of the screen
                 {
@@ -120,8 +125,15 @@ struct Homer {
             colourFade = 255;                                                                           // Reset colours
         }
     }
+
+    void deathLoop() {
+        PlaySound(deathSound);                                          // Play the death sound
+        destroyed = true;                                               // Set ship alive status to false, this then allows for the rest of the death logic to trigger
+    }
+
     void unload() {                                                                                     // Function for unloading the texture
         UnloadTexture(sprite);                                                                          // Unload to free memory
+        UnloadSound(deathSound);                                                                        // Unload the wav file for death
     }
 
 
