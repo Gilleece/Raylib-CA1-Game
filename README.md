@@ -14,3 +14,4 @@ Credits:
 - Asteroid art: https://opengameart.org/content/brown-asteroid
 - Music: https://www.zapsplat.com/sound-effect-category/game-music-and-loops/
 - Sound effects: https://raylibtech.itch.io/rfxgen
+- Resources: https://www.raylib.com/ || https://github.com/naoisecollins/
