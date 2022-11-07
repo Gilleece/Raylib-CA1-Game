@@ -1,23 +1,16 @@
 # Space Fighter
 An incredibly originally titled Shoot 'em Up built with C++ using Raylib.
 
-To do:
+Download and run "main.exe" to play the game.
 
 
-Required:
-- Music
-- SFX
+Credits:
 
-Nice to have:
-
-- Shooting enemy
-- Player gun cool down
-- Pick ups
-- Bomb
-
-
-Note: Variables etc are verbosely named within this project due to its academic nature.
-
-Known bugs:
-
-- Ship continues to move direction held on death when respawned (Turn off listener for key on death)
+Font: https://all-free-download.com/font/download/next_games_6897757.html
+Pixel art keys: https://egordorichev.itch.io/key-set
+Sprites source: https://ansimuz.itch.io/spaceship-shooter-environment
+Background art: https://dinvstudio.itch.io/dynamic-space-background-lite-free
+Game logo designed using: flamingtext.com
+Asteroid art: https://opengameart.org/content/brown-asteroid
+Music: https://www.zapsplat.com/sound-effect-category/game-music-and-loops/
+Sound effects: https://raylibtech.itch.io/rfxgen
