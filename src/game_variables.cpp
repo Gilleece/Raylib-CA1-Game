@@ -82,12 +82,12 @@ void drawStartScreen()                              // Function to call to draw 
         frameCounter = 0;                           // Reset the frame counter so that logic based on it (i.e waiting 300 frames before spawning an aesteroid) runs at the correct time
     }
 
-    startScreenSubText = "A very original name";            // Set the text
-    playText = "Press ENTER to play!";                      // Set more text
-    int subWidth = MeasureText(startScreenSubText, 30);     // Measure the text size for positioning
-    int playTextWidth = MeasureText(playText, 45);          // Same as prior line
-    DrawTextureRec(logo, logoRec, (Vector2){(float)GetScreenWidth() / 2 - logo.width / 2, (float)GetScreenHeight() / 2 - logo.height}, WHITE);              // Draw the logo image
-    DrawText(startScreenSubText, GetScreenWidth() / 2 - subWidth / 2, GetScreenHeight() / 2 - 30, 30, GOLD);                                                // Draw the text underneath the logo
+    startScreenSubText = "A very originally titled Shoot 'Em Up";   // Set the text
+    playText = "Press ENTER to play!";                              // Set more text
+    int subWidth = MeasureText(startScreenSubText, 30);             // Measure the text size for positioning
+    int playTextWidth = MeasureText(playText, 45);                  // Same as prior line
+    DrawTextureRec(logo, logoRec, (Vector2){(float)GetScreenWidth() / 2 - logo.width / 2, (float)GetScreenHeight() / 3 - logo.height}, WHITE);              // Draw the logo image
+    DrawText(startScreenSubText, GetScreenWidth() / 2 - subWidth / 2, GetScreenHeight() / 3 - 30, 30, GOLD);                                                // Draw the text underneath the logo
     if (textOpacity > 0) {textOpacity -= 5;} else {textOpacity = 255;};                                                                                     // Loop to check transparency of the text and to enable the flashing animation
     DrawText(playText, GetScreenWidth() / 2 - playTextWidth / 2, GetScreenHeight() - 120, 45, CLITERAL(Color){ 255, 255, 255, (unsigned char)textOpacity}); // Draw this text, take in the opacity number being modified in the prior line
     

@@ -10,7 +10,7 @@ struct Homer {
     float frameHeight;   // Height of object  
     float currentFrame;  // For animating the sprite 
     float travelSpeed;   // object speed
-    float travelAmount;// object distance
+    float travelAmount;  // object distance
     Rectangle rec;       // Rectange to draw bullet onto
     Rectangle hitBox;    // Rectange for collision detection
     Vector2 pos;         // XY position
@@ -18,6 +18,7 @@ struct Homer {
     bool active;         // Bool to show if object still exists
     bool destroyed;      // Bool to show if destroyed
     int opacity;         // counter to handle opacity fade
+    int colourFade;      // Used to shift colour on death 
 
     Homer() {
         sprite = LoadTexture("assets/sprites/homerSprite.png");   // object sprite sheet
@@ -31,6 +32,7 @@ struct Homer {
         active = false;                                             // Bool to show if object still exists
         destroyed = false;                                          // If true then player has shot the Homer
         opacity = 255;                                              // Make completely non-transparent (What is the opposite of transparent? Oh, it's opaque...) Okay, let me say that again. Make completely opaque. That now makes sense why the opacity would be 255 and not 0, I always thought it was the opposite away around, but no.
+        colourFade = 255;                                           // Set colours to default
     }
 
     void updateHomer(int frequency, float startMod, float horizontalMovement, Vector2 targetPos) { // Function that handles updating the homer on each frame
@@ -89,14 +91,15 @@ struct Homer {
             currentFrame = 0.0f;                                                   // Set it back to zero
         }        
 
-        DrawTextureRec(sprite, rec, pos, CLITERAL(Color){ 255, 255, 255, (unsigned char)opacity});      // Draw the texture of the Homer
+        DrawTextureRec(sprite, rec, pos, CLITERAL(Color){ 255, (unsigned char)colourFade, (unsigned char)colourFade, (unsigned char)opacity});   // Draw the texture of the Homer
         }
         if (destroyed && opacity > 0)                                                                   // If destroyed and still visible
         {
             hitBox = {-100, -100, 0, 0};                                                                // To stop hitbox blocking bullets or movement after Homer is destroyed
             pos.y-= 3;                                                                                  // Move Homer back a bit to reflect the impact of the bullet
-            opacity -= 15;                                                                              // Reduce opacity, to fade out the aesteroid
-            DrawTextureRec(sprite, rec, pos, CLITERAL(Color){ 255, 255, 255, (unsigned char)opacity});  // Drw the aesteroid
+            opacity -= 5;                                                                               // Reduce opacity, to fade out the aesteroid
+            if (colourFade > 0) {colourFade -= 15;};                                                    // Change the colour to animate the destruction, checking if above 0 so colour doesn't loop around as the opacity drops at a slower rate
+            DrawTextureRec(sprite, rec, pos, CLITERAL(Color){ 255, (unsigned char)colourFade, (unsigned char)colourFade, (unsigned char)opacity});// Draw the aesteroid
         } 
         else if (destroyed && opacity <= 0)                                                             // When Homer is destroyed and has become fully transparent
         {                                       
@@ -114,6 +117,7 @@ struct Homer {
             playerScore += 50;                                                                          // Increment player score
             destroyed = false;                                                                          // No longer destroyed
             opacity = 255;                                                                              // Make fully opaque. Great word.
+            colourFade = 255;                                                                           // Reset colours
         }
     }
     void unload() {                                                                                     // Function for unloading the texture

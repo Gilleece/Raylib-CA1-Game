@@ -7,9 +7,7 @@ To do:
 Required:
 - Add instructions to start screen
 - Music
-- Start screen
-- Homing enemy
-- Add loads of comments
+- SFX
 
 Nice to have:
 
