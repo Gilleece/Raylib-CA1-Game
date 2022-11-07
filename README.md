@@ -5,7 +5,6 @@ To do:
 
 
 Required:
-- Add instructions to start screen
 - Music
 - SFX
 

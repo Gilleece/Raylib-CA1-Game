@@ -18,6 +18,9 @@ int main()
     // Initilization
     ////////////////////////////
     InitWindow(winWidth, winHeight, "Space Fighter (most original title of all time)");    // Create game window
+    InitAudioDevice();                                                                     // Initialize the audio device
+    Music backgroundMusic = LoadMusicStream("assets/sounds/bgm.mp3");
+    PlayMusicStream(backgroundMusic);
     SetWindowState(FLAG_VSYNC_HINT);                                                       // Enable Vsync
     SetWindowState(FLAG_MSAA_4X_HINT);                                                     // Turn on MSAA
     SetTargetFPS(60);                                                                      // Lock FPS to 60
@@ -54,6 +57,7 @@ int main()
     while (!WindowShouldClose())                        // Main gameloop, carries on until user presses ESC or Xs off the window
     {
         frameCounter++;                                 // Increment the frame counter on each frame while window is open
+        UpdateMusicStream(backgroundMusic);             // Reads and plays data from the bgm.mp3 file
         BeginDrawing();                                 // Begin drawing frames
             ClearBackground(BLACK);                     // Clear the background and paint it black, not strictly necessary but handy for debugging
             if (startScreen) {                          // Checks if the game is currently on the start screen
@@ -153,6 +157,7 @@ int main()
     }                                        // Loop through all bullets and free memory
     startBackground.unloadBackground();      // Free Memory                           
     background.unloadBackground();           // Free Memory
+    UnloadMusicStream(backgroundMusic);      // Free Memory
     CloseWindow();                           // Close the window
     
     return 0;                                // Successful exit code

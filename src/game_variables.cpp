@@ -94,7 +94,7 @@ void drawStartScreen()                              // Function to call to draw 
     DrawText(startScreenSubText, GetScreenWidth() / 2 - subWidth / 2, GetScreenHeight() / 3 - 30, 30, GOLD);                                                  // Draw the text underneath the logo
     if (textOpacity > 0) {textOpacity -= 5;} else {textOpacity = 255;};                                                                                       // Loop to check transparency of the text and to enable the flashing animation
     DrawText(playText, GetScreenWidth() / 2 - playTextWidth / 2, GetScreenHeight() - 120, 45, CLITERAL(Color){ 255, 255, 255, (unsigned char)textOpacity});   // Draw this text, take in the opacity number being modified in the prior line
-    DrawTextureRec(controlsImage, controlsRec, (Vector2){(float)GetScreenWidth() / 2 - controlsImage.width / 2, (float)GetScreenHeight() / 2 -100}, WHITE);   // Draw the controls image
+    DrawTextureRec(controlsImage, controlsRec, (Vector2){(float)GetScreenWidth() / 2 - controlsImage.width / 2, (float)GetScreenHeight() / 2}, WHITE);   // Draw the controls image
 
 }
 
